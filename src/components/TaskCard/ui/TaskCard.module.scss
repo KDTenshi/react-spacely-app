@@ -1,4 +1,17 @@
-.Card {
-  padding: 15px;
+@use "../../../shared/style/colors.scss" as c;
+
+.Task {
+  background: c.$WHITE;
+  border: 1px solid c.$GRAY;
+  padding: 15px 10px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   cursor: pointer;
+  transition: all 0.25s;
+
+  &:hover {
+    box-shadow: 0 0 10px c.$GRAY;
+  }
 }

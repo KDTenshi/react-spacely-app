@@ -9,7 +9,9 @@ const App: FC = () => {
 
   return (
     <div className="App">
-      <button onClick={() => dispatch(addTask())}>Add task</button>
+      <button onClick={() => dispatch(addTask())} className="Button">
+        Add task
+      </button>
       <Board />
     </div>
   );

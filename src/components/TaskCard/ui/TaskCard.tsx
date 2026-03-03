@@ -15,7 +15,7 @@ const TaskCard: FC<TaskCardProps> = ({ taskID }) => {
   const dispatch = useAppDispatch();
 
   return (
-    <div className={style.Card} {...attributes} {...listeners} ref={setNodeRef}>
+    <div className={style.Task} {...attributes} {...listeners} ref={setNodeRef}>
       {task.name}
       <button onClick={() => dispatch(deleteTask({ taskID }))}>Delete</button>
     </div>
