@@ -5,6 +5,7 @@ import { arrayMove } from "@dnd-kit/sortable";
 type TasksState = {
   tasksList: { [key: string]: TTask };
   columns: { [key in TColumnType]: string[] };
+  selectedTaskID: string | null;
 };
 
 const initialState: TasksState = {
@@ -14,16 +15,19 @@ const initialState: TasksState = {
     doing: [],
     done: [],
   },
+  selectedTaskID: null,
 };
 
 export const tasksSlice = createSlice({
   name: "tasks",
   initialState,
   reducers: {
-    addTask: (state) => {
+    addTask: (state, action: PayloadAction<{ name: string }>) => {
+      const { name } = action.payload;
+
       const task: TTask = {
         id: nanoid(),
-        name: `Task ${Date.now()}`,
+        name,
         description: "",
         column: "todo",
       };
@@ -59,7 +63,16 @@ export const tasksSlice = createSlice({
 
       state.columns[column] = arrayMove(state.columns[column], activeTaskIDIndex, overTaskIDIndex);
     },
+    setSelectedTaskID: (state, action: PayloadAction<{ taskID: string }>) => {
+      const { taskID } = action.payload;
+
+      state.selectedTaskID = taskID;
+    },
+    clearSelectedTaskID: (state) => {
+      state.selectedTaskID = null;
+    },
   },
 });
 
-export const { addTask, deleteTask, changeTaskColumn, changeTaskPosition } = tasksSlice.actions;
+export const { addTask, deleteTask, changeTaskColumn, changeTaskPosition, setSelectedTaskID, clearSelectedTaskID } =
+  tasksSlice.actions;

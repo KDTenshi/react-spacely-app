@@ -1,19 +1,54 @@
-import type { FC } from "react";
+import { useState, type FC } from "react";
 import style from "./Board.module.scss";
 import { Column } from "../../Column";
-import { DndContext, MouseSensor, useSensor, useSensors, type DragOverEvent, type DragStartEvent } from "@dnd-kit/core";
+import {
+  DndContext,
+  DragOverlay,
+  MouseSensor,
+  pointerWithin,
+  useSensor,
+  useSensors,
+  type DragOverEvent,
+  type DragStartEvent,
+} from "@dnd-kit/core";
 import { useAppDispatch, useAppSelector } from "../../../app/store/appStore";
-import { changeTaskColumn, changeTaskPosition } from "../../../shared/store/tasksSlice";
+import {
+  addTask,
+  changeTaskColumn,
+  changeTaskPosition,
+  clearSelectedTaskID,
+  setSelectedTaskID,
+} from "../../../shared/store/tasksSlice";
 import type { TColumnType } from "../../../shared/types/types";
+import { TaskCard } from "../../TaskCard";
 
 const Board: FC = () => {
   const dispatch = useAppDispatch();
 
+  const selectedTaskID = useAppSelector((state) => state.tasks.selectedTaskID);
+
   const columns = useAppSelector((state) => state.tasks.columns);
   const columnsTypes = Object.keys(columns) as TColumnType[];
 
+  const [taskName, setTaskName] = useState("");
+
+  const handleAddTask = (e: React.SubmitEvent) => {
+    e.preventDefault();
+
+    const name = taskName.trim();
+
+    console.log(name);
+
+    if (name) {
+      dispatch(addTask({ name }));
+      setTaskName("");
+    }
+  };
+
   const handleDragStart = (e: DragStartEvent) => {
-    console.log(`Dragging: ${e.active.id}`);
+    const taskID = e.active.id as string;
+
+    dispatch(setSelectedTaskID({ taskID }));
   };
 
   const handleDragOver = (e: DragOverEvent) => {
@@ -48,7 +83,7 @@ const Board: FC = () => {
   };
 
   const handleDragEnd = () => {
-    console.log("No drag");
+    dispatch(clearSelectedTaskID());
   };
 
   const mouseSensor = useSensor(MouseSensor, { activationConstraint: { distance: 10 } });
@@ -56,11 +91,36 @@ const Board: FC = () => {
 
   return (
     <div className={style.Board}>
-      <DndContext onDragStart={handleDragStart} onDragOver={handleDragOver} onDragEnd={handleDragEnd} sensors={sensors}>
-        {columnsTypes.map((columnType) => (
-          <Column type={columnType} key={columnType} />
-        ))}
-      </DndContext>
+      <div className={style.Header}>
+        <p className={style.Title}>Project title</p>
+        <form className={style.Form} onSubmit={handleAddTask}>
+          <input
+            type="text"
+            placeholder="Task name..."
+            value={taskName}
+            onChange={(e) => setTaskName(e.target.value)}
+          />
+          <button>Add task</button>
+        </form>
+      </div>
+      <div className={style.Columns}>
+        <DndContext
+          onDragStart={handleDragStart}
+          onDragOver={handleDragOver}
+          onDragEnd={handleDragEnd}
+          sensors={sensors}
+          collisionDetection={pointerWithin}
+        >
+          {columnsTypes.map((columnType) => (
+            <Column type={columnType} key={columnType} />
+          ))}
+          {selectedTaskID && (
+            <DragOverlay>
+              <TaskCard taskID={selectedTaskID} />
+            </DragOverlay>
+          )}
+        </DndContext>
+      </div>
     </div>
   );
 };

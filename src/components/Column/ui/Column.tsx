@@ -14,9 +14,9 @@ const Column: FC<ColumnProps> = ({ type }) => {
   const taskIDs = useAppSelector((state) => state.tasks.columns[type]);
 
   return (
-    <div className={style.Column}>
+    <div className={style.Column} ref={setNodeRef}>
       <p>{type}</p>
-      <div className={style.List} ref={setNodeRef}>
+      <div className={style.List}>
         {taskIDs.length === 0 && <p>No tasks</p>}
         {taskIDs.map((taskID) => (
           <TaskCard taskID={taskID} key={taskID} />
