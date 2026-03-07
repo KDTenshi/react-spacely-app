@@ -1,4 +1,5 @@
 @use "../../../shared/style/colors.scss" as c;
+@use "../../../shared/style/typography.scss" as t;
 
 .Column {
   background: c.$WHITE;
@@ -11,6 +12,16 @@
   box-shadow: 0 0 15px c.$GRAY;
 }
 
+.Title {
+  @include t.HEADING_4();
+
+  color: c.$BLACK;
+
+  &::first-letter {
+    text-transform: uppercase;
+  }
+}
+
 .List {
   padding: 15px 10px;
   height: 50vh;
@@ -18,4 +29,11 @@
   border: 1px solid c.$GRAY;
   background: c.$GRAY_LIGHT;
   border-radius: 5px;
+}
+
+.Empty {
+  @include t.BODY_2();
+
+  color: c.$GRAY_DARK;
+  text-align: center;
 }

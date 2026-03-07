@@ -15,9 +15,9 @@ const Column: FC<ColumnProps> = ({ type }) => {
 
   return (
     <div className={style.Column} ref={setNodeRef}>
-      <p>{type}</p>
+      <p className={style.Title}>{type}</p>
       <div className={style.List}>
-        {taskIDs.length === 0 && <p>No tasks</p>}
+        {taskIDs.length === 0 && <p className={style.Empty}>No tasks</p>}
         {taskIDs.map((taskID) => (
           <TaskCard taskID={taskID} key={taskID} />
         ))}

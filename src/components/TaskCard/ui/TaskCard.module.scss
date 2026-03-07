@@ -1,4 +1,5 @@
 @use "../../../shared/style/colors.scss" as c;
+@use "../../../shared/style/typography.scss" as t;
 
 .Task {
   background: c.$WHITE;
@@ -13,5 +14,28 @@
 
   &:hover {
     box-shadow: 0 0 10px c.$GRAY;
+  }
+}
+
+.Name {
+  @include t.BODY_1();
+
+  color: c.$GRAY_DARK;
+}
+
+.Button {
+  @include t.BODY_2();
+
+  color: c.$GRAY_DARK;
+  padding: 5px 10px;
+  border-radius: 5px;
+  background: c.$GRAY_LIGHT;
+  border: 1px solid c.$GRAY;
+  transition: all 0.25s;
+  cursor: pointer;
+
+  &:hover {
+    background: c.$WHITE;
+    box-shadow: 0 0 5px c.$GRAY;
   }
 }

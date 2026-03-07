@@ -99,8 +99,9 @@ const Board: FC = () => {
             placeholder="Task name..."
             value={taskName}
             onChange={(e) => setTaskName(e.target.value)}
+            className={style.Input}
           />
-          <button>Add task</button>
+          <button className={style.Button}>Add task</button>
         </form>
       </div>
       <div className={style.Columns}>

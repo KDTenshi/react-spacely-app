@@ -16,8 +16,10 @@ const TaskCard: FC<TaskCardProps> = ({ taskID }) => {
 
   return (
     <div className={style.Task} {...attributes} {...listeners} ref={setNodeRef}>
-      {task.name}
-      <button onClick={() => dispatch(deleteTask({ taskID }))}>Delete</button>
+      <p className={style.Name}>{task.name}</p>
+      <button className={style.Button} onClick={() => dispatch(deleteTask({ taskID }))}>
+        Delete
+      </button>
     </div>
   );
 };

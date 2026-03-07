@@ -1,0 +1,39 @@
+@mixin _HEADING_BASE($size, $weight) {
+  font-size: $size;
+  font-weight: $weight;
+  font-family: "Montserrat", sans-serif;
+}
+
+@mixin HEADING_1() {
+  @include _HEADING_BASE(35px, 700);
+}
+
+@mixin HEADING_2() {
+  @include _HEADING_BASE(30px, 600);
+}
+
+@mixin HEADING_3() {
+  @include _HEADING_BASE(25px, 600);
+}
+
+@mixin HEADING_4() {
+  @include _HEADING_BASE(20px, 500);
+}
+
+@mixin _BODY_BASE($size, $weight) {
+  font-size: $size;
+  font-weight: $weight;
+  font-family: "Quicksand", sans-serif;
+}
+
+@mixin BODY_1() {
+  @include _BODY_BASE(20px, 400);
+}
+
+@mixin BODY_2() {
+  @include _BODY_BASE(15px, 400);
+}
+
+@mixin BODY_3() {
+  @include _BODY_BASE(10px, 300);
+}
