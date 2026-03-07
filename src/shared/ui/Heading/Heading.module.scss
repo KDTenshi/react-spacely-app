@@ -1,0 +1,43 @@
+@use "../../style/colors.scss" as c;
+@use "../../style/typography.scss" as t;
+
+.First {
+  @include t.HEADING_1();
+}
+
+.Second {
+  @include t.HEADING_2();
+}
+
+.Third {
+  @include t.HEADING_3();
+}
+
+.Fourth {
+  @include t.HEADING_4();
+}
+
+@mixin HeadingColoring($baseColor, $selectColor) {
+  color: $baseColor;
+
+  &::selection {
+    background: $baseColor;
+    color: $selectColor;
+  }
+}
+
+.Black {
+  @include HeadingColoring(c.$BLACK, c.$WHITE);
+}
+
+.Dark {
+  @include HeadingColoring(c.$GRAY_DARK, c.$GRAY_LIGHT);
+}
+
+.Dark {
+  @include HeadingColoring(c.$GRAY_LIGHT, c.$GRAY_DARK);
+}
+
+.White {
+  @include HeadingColoring(c.$WHITE, c.$BLACK);
+}

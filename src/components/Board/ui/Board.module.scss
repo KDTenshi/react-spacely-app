@@ -19,12 +19,6 @@
   padding: 15px 50px;
 }
 
-.Title {
-  @include t.HEADING_3();
-
-  color: c.$BLACK;
-}
-
 .Input {
   @include t.BODY_2();
 

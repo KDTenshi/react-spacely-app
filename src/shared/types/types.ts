@@ -6,3 +6,5 @@ export type TTask = {
   description: string;
   column: TColumnType;
 };
+
+export type ListUnion<T extends string | number> = { [key in T]: string };

@@ -21,6 +21,7 @@ import {
 } from "../../../shared/store/tasksSlice";
 import type { TColumnType } from "../../../shared/types/types";
 import { TaskCard } from "../../TaskCard";
+import { Heading } from "../../../shared/ui";
 
 const Board: FC = () => {
   const dispatch = useAppDispatch();
@@ -92,7 +93,9 @@ const Board: FC = () => {
   return (
     <div className={style.Board}>
       <div className={style.Header}>
-        <p className={style.Title}>Project title</p>
+        <div className={style.Title}>
+          <Heading level={3}>Project title</Heading>
+        </div>
         <form className={style.Form} onSubmit={handleAddTask}>
           <input
             type="text"

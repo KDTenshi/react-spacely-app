@@ -12,16 +12,6 @@
   box-shadow: 0 0 15px c.$GRAY;
 }
 
-.Title {
-  @include t.HEADING_4();
-
-  color: c.$BLACK;
-
-  &::first-letter {
-    text-transform: uppercase;
-  }
-}
-
 .List {
   padding: 15px 10px;
   height: 50vh;
