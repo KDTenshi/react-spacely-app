@@ -1,0 +1,34 @@
+@use "../../style/colors.scss" as c;
+@use "../../style/typography.scss" as t;
+
+.Big {
+  @include t.BODY_1();
+
+  padding: 5px 15px;
+}
+
+.Medium {
+  @include t.BODY_2();
+
+  padding: 5px 10px;
+}
+
+.Small {
+  @include t.BODY_3();
+
+  padding: 5px;
+}
+
+.Light {
+  background: c.$GRAY_LIGHT;
+  color: c.$GRAY_DARK;
+  border: 1px solid c.$GRAY;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.25s;
+
+  &:hover {
+    background: c.$WHITE;
+    box-shadow: 0 0 5px c.$GRAY;
+  }
+}

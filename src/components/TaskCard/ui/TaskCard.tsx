@@ -3,7 +3,7 @@ import style from "./TaskCard.module.scss";
 import { useAppDispatch, useAppSelector } from "../../../app/store/appStore";
 import { deleteTask } from "../../../shared/store/tasksSlice";
 import { useSortable } from "@dnd-kit/sortable";
-import { TextItem } from "../../../shared/ui";
+import { Button, TextItem } from "../../../shared/ui";
 
 interface TaskCardProps {
   taskID: string;
@@ -18,9 +18,7 @@ const TaskCard: FC<TaskCardProps> = ({ taskID }) => {
   return (
     <div className={style.Task} {...attributes} {...listeners} ref={setNodeRef}>
       <TextItem>{task.name}</TextItem>
-      <button className={style.Button} onClick={() => dispatch(deleteTask({ taskID }))}>
-        Delete
-      </button>
+      <Button onClick={() => dispatch(deleteTask({ taskID }))}>Delete</Button>
     </div>
   );
 };

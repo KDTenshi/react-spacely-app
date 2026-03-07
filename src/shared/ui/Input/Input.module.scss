@@ -1,0 +1,28 @@
+@use "../../style/colors.scss" as c;
+@use "../../style/typography.scss" as t;
+
+.Big {
+  @include t.BODY_1();
+
+  padding: 5px 15px;
+}
+
+.Medium {
+  @include t.BODY_2();
+
+  padding: 5px 10px;
+}
+
+.Small {
+  @include t.BODY_3();
+
+  padding: 5px;
+}
+
+.Light {
+  background: c.$GRAY_LIGHT;
+  border: 1px solid c.$GRAY;
+  color: c.$GRAY_DARK;
+  border-radius: 5px;
+  outline: 0;
+}
