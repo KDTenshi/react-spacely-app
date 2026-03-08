@@ -22,6 +22,7 @@ import {
 import type { TColumnType } from "../../../shared/types/types";
 import { TaskCard } from "../../TaskCard";
 import { Button, Heading, Input } from "../../../shared/ui";
+import { TaskPanel } from "../../TaskPanel";
 
 const Board: FC = () => {
   const dispatch = useAppDispatch();
@@ -107,6 +108,7 @@ const Board: FC = () => {
         </form>
       </div>
       <div className={style.Columns}>
+        <TaskPanel />
         <DndContext
           onDragStart={handleDragStart}
           onDragOver={handleDragOver}

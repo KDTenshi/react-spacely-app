@@ -21,10 +21,10 @@ const sizeStyles: ListUnion<InputSize> = {
   small: style.Small,
 };
 
-const Input: FC<InputProps> = ({ fontSize = "medium", color = "light", className = "", ...props }) => {
+const Input: FC<InputProps> = ({ fontSize = "medium", color = "light", className = "", type = "text", ...props }) => {
   const inputClassName = [colorStyles[color], sizeStyles[fontSize], className].join(" ");
 
-  return <input type="text" className={inputClassName} {...props} />;
+  return <input className={inputClassName} type={type} {...props} />;
 };
 
 export default Input;
