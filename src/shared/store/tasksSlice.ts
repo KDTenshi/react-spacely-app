@@ -6,6 +6,7 @@ type TasksState = {
   tasksList: { [key: string]: TTask };
   columns: { [key in TColumnType]: string[] };
   selectedTaskID: string | null;
+  editingTaskID: string | null;
 };
 
 const initialState: TasksState = {
@@ -16,6 +17,7 @@ const initialState: TasksState = {
     done: [],
   },
   selectedTaskID: null,
+  editingTaskID: null,
 };
 
 export const tasksSlice = createSlice({
@@ -71,8 +73,24 @@ export const tasksSlice = createSlice({
     clearSelectedTaskID: (state) => {
       state.selectedTaskID = null;
     },
+    setEditingTaskID: (state, action: PayloadAction<{ taskID: string }>) => {
+      const { taskID } = action.payload;
+
+      state.editingTaskID = taskID;
+    },
+    clearEditingTaskID: (state) => {
+      state.editingTaskID = null;
+    },
   },
 });
 
-export const { addTask, deleteTask, changeTaskColumn, changeTaskPosition, setSelectedTaskID, clearSelectedTaskID } =
-  tasksSlice.actions;
+export const {
+  addTask,
+  deleteTask,
+  changeTaskColumn,
+  changeTaskPosition,
+  setSelectedTaskID,
+  clearSelectedTaskID,
+  setEditingTaskID,
+  clearEditingTaskID,
+} = tasksSlice.actions;

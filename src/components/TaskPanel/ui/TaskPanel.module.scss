@@ -1,7 +1,7 @@
 @use "../../../shared/style/colors.scss" as c;
 @use "../../../shared/style/typography.scss" as t;
 
-.Panel {
+@mixin Panel {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -14,6 +14,19 @@
   display: flex;
   flex-direction: column;
   gap: 15px;
+  transition: transform 0.25s linear;
+}
+
+.Shown {
+  @include Panel();
+
+  transform: translateX(0);
+}
+
+.Hidden {
+  @include Panel();
+
+  transform: translateX(100%);
 }
 
 .Form {
@@ -43,6 +56,15 @@
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba($color: c.$BLACK, $alpha: 0.25);
   z-index: 5;
+}
+
+@keyframes show {
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
 }
