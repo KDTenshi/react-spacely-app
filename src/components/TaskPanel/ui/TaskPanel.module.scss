@@ -38,6 +38,22 @@
   border-bottom: 1px solid c.$GRAY;
 }
 
+.Name {
+  @include t.BODY_1();
+
+  background: c.$WHITE;
+  padding: 5px 15px;
+  border: 0;
+  outline: 0;
+  color: c.$GRAY_DARK;
+  border-bottom: 1px solid c.$GRAY;
+
+  &::selection {
+    background: c.$GRAY_DARK;
+    color: c.$GRAY_LIGHT;
+  }
+}
+
 .Description {
   @include t.BODY_2();
 
@@ -48,6 +64,11 @@
   height: 25vh;
   resize: none;
   outline: 0;
+}
+
+.Button {
+  width: max-content;
+  align-self: flex-end;
 }
 
 .Wrapper {

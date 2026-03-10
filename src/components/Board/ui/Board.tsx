@@ -39,8 +39,6 @@ const Board: FC = () => {
 
     const name = taskName.trim();
 
-    console.log(name);
-
     if (name) {
       dispatch(addTask({ name }));
       setTaskName("");

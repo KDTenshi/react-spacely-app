@@ -81,6 +81,14 @@ export const tasksSlice = createSlice({
     clearEditingTaskID: (state) => {
       state.editingTaskID = null;
     },
+    editTask: (state, action: PayloadAction<{ taskID: string; name: string; description: string }>) => {
+      const { taskID, name, description } = action.payload;
+
+      const task = state.tasksList[taskID];
+
+      task.name = name;
+      task.description = description;
+    },
   },
 });
 
@@ -93,4 +101,5 @@ export const {
   clearSelectedTaskID,
   setEditingTaskID,
   clearEditingTaskID,
+  editTask,
 } = tasksSlice.actions;
