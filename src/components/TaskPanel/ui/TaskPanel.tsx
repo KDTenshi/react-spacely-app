@@ -1,7 +1,7 @@
 import style from "./TaskPanel.module.scss";
 import { Button, Heading } from "../../../shared/ui";
 import { useAppDispatch, useAppSelector } from "../../../app/store/appStore";
-import { clearEditingTaskID, editTask } from "../../../shared/store/tasksSlice";
+import { clearEditingTaskID, deleteTask, editTask } from "../../../shared/store/tasksSlice";
 import { useEffect, useState, type FC } from "react";
 
 type TaskEditData = {
@@ -55,6 +55,9 @@ const TaskPanel: FC = () => {
         <Heading level={3}>Task details</Heading>
         {task && (
           <form className={style.Form} onSubmit={handleSubmit}>
+            <Button className={style.Button} onClick={() => dispatch(deleteTask({ taskID: task.id }))}>
+              Delete
+            </Button>
             <input
               className={style.Name}
               placeholder="Task name..."

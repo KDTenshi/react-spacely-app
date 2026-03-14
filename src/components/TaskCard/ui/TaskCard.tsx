@@ -1,9 +1,11 @@
 import type { FC } from "react";
 import style from "./TaskCard.module.scss";
 import { useAppDispatch, useAppSelector } from "../../../app/store/appStore";
-import { deleteTask, setEditingTaskID } from "../../../shared/store/tasksSlice";
+import { setEditingTaskID } from "../../../shared/store/tasksSlice";
 import { useSortable } from "@dnd-kit/sortable";
-import { Button, TextItem } from "../../../shared/ui";
+import { TextItem } from "../../../shared/ui";
+import { getDateString } from "../../../shared/utils/getDateString";
+import { TaskPriorityDisplay } from "../../TaskPriorityDisplay";
 
 interface TaskCardProps {
   taskID: string;
@@ -24,8 +26,9 @@ const TaskCard: FC<TaskCardProps> = ({ taskID }) => {
       ref={setNodeRef}
       onClick={() => dispatch(setEditingTaskID({ taskID: task.id }))}
     >
-      <TextItem>{task.name}</TextItem>
-      <Button onClick={() => dispatch(deleteTask({ taskID }))}>Delete</Button>
+      <TextItem color="black">{task.name}</TextItem>
+      <TaskPriorityDisplay priority={task.priority} />
+      <TextItem size="medium">Created at: {getDateString(task.createdAt)}</TextItem>
     </div>
   );
 };

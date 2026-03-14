@@ -1,0 +1,25 @@
+@use "../../../shared/style/colors.scss" as c;
+@use "../../../shared/style/typography.scss" as t;
+
+@mixin Priority() {
+  @include t.BODY_2();
+
+  background: c.$GRAY;
+  border: 1px solid c.$GRAY_DARK;
+  width: max-content;
+  border-radius: 5px;
+  padding: 5px 15px;
+  text-transform: uppercase;
+}
+
+.Low {
+  @include Priority();
+}
+
+.Moderate {
+  @include Priority();
+}
+
+.High {
+  @include Priority();
+}

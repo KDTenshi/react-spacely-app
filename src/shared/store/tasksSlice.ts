@@ -31,7 +31,9 @@ export const tasksSlice = createSlice({
         id: nanoid(),
         name,
         description: "",
+        createdAt: Date.now(),
         column: "todo",
+        priority: "low",
       };
 
       state.columns.todo.push(task.id);
@@ -41,6 +43,10 @@ export const tasksSlice = createSlice({
       const { taskID } = action.payload;
 
       const task = state.tasksList[taskID];
+
+      if (state.editingTaskID === taskID) {
+        state.editingTaskID = null;
+      }
 
       state.columns[task.column] = state.columns[task.column].filter((id) => id !== taskID);
       delete state.tasksList[taskID];
