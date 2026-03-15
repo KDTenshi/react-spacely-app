@@ -1,0 +1,38 @@
+@use "../../../shared/style/colors.scss" as c;
+@use "../../../shared/style/typography.scss" as t;
+
+@mixin PriorityButton($bgColor, $borderColor) {
+  @include t.BODY_2();
+
+  text-transform: uppercase;
+  background: $bgColor;
+  border: 1px solid $borderColor;
+  padding: 5px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.25s;
+
+  &.Active {
+    background: $borderColor;
+
+    &:hover {
+      background: $bgColor;
+    }
+  }
+
+  &:hover {
+    background: c.$WHITE;
+  }
+}
+
+.Low {
+  @include PriorityButton(c.$GREEN_LIGHT, c.$GREEN);
+}
+
+.Moderate {
+  @include PriorityButton(c.$YELLOW_LIGHT, c.$YELLOW);
+}
+
+.High {
+  @include PriorityButton(c.$RED_LIGHT, c.$RED);
+}

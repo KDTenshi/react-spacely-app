@@ -113,6 +113,7 @@ const Board: FC = () => {
           onDragEnd={handleDragEnd}
           sensors={sensors}
           collisionDetection={pointerWithin}
+          autoScroll={false}
         >
           {columnsTypes.map((columnType) => (
             <Column type={columnType} key={columnType} />

@@ -3,10 +3,14 @@ import { Button, Heading } from "../../../shared/ui";
 import { useAppDispatch, useAppSelector } from "../../../app/store/appStore";
 import { clearEditingTaskID, deleteTask, editTask } from "../../../shared/store/tasksSlice";
 import { useEffect, useState, type FC } from "react";
+import { TaskPriorityPicker } from "../../TaskPriorityPicker";
+import type { TTaskPriority } from "../../../shared/types/types";
+import { ConfirmPopup } from "../../ConfirmPopup";
 
 type TaskEditData = {
   name: string;
   description: string;
+  priority: TTaskPriority;
 };
 
 const TaskPanel: FC = () => {
@@ -16,12 +20,13 @@ const TaskPanel: FC = () => {
     state.tasks.editingTaskID ? state.tasks.tasksList[state.tasks.editingTaskID] : null,
   );
 
-  const [taskEditData, setTaskEditData] = useState<TaskEditData>({ name: "", description: "" });
+  const [taskEditData, setTaskEditData] = useState<TaskEditData>({ name: "", description: "", priority: "low" });
+  const [isDelete, setIsDelete] = useState(false);
 
   useEffect(() => {
     if (task) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
-      setTaskEditData({ name: task.name, description: task.description });
+      setTaskEditData({ name: task.name, description: task.description, priority: task.priority });
     }
   }, [task]);
 
@@ -30,11 +35,12 @@ const TaskPanel: FC = () => {
 
     const name = taskEditData.name.trim();
     const description = taskEditData.description.trim();
+    const priority = taskEditData.priority;
 
-    if (name === task.name && description === task.description) return;
+    if (name === task.name && description === task.description && priority === task.priority) return;
 
     if (name) {
-      dispatch(editTask({ taskID: task.id, name, description }));
+      dispatch(editTask({ taskID: task.id, name, description, priority }));
     }
   };
 
@@ -51,29 +57,42 @@ const TaskPanel: FC = () => {
 
   return (
     <>
+      {isDelete && task && (
+        <ConfirmPopup
+          message="Delete task?"
+          handleConfirm={() => dispatch(deleteTask({ taskID: task.id }))}
+          closePopup={() => setIsDelete(false)}
+        />
+      )}
       <div className={task ? style.Shown : style.Hidden}>
         <Heading level={3}>Task details</Heading>
         {task && (
-          <form className={style.Form} onSubmit={handleSubmit}>
-            <Button className={style.Button} onClick={() => dispatch(deleteTask({ taskID: task.id }))}>
-              Delete
-            </Button>
-            <input
-              className={style.Name}
-              placeholder="Task name..."
-              value={taskEditData.name}
-              onChange={(e) => setTaskEditData({ ...taskEditData, name: e.target.value })}
-            />
-            <textarea
-              className={style.Description}
-              placeholder="No task description..."
-              value={taskEditData.description}
-              onChange={(e) => setTaskEditData({ ...taskEditData, description: e.target.value })}
-            ></textarea>
-            <Button type="submit" className={style.Button}>
-              Confirm
-            </Button>
-          </form>
+          <>
+            <form className={style.Form} onSubmit={handleSubmit}>
+              <Button className={style.Button} onClick={() => setIsDelete(true)}>
+                Delete
+              </Button>
+              <input
+                className={style.Name}
+                placeholder="Task name..."
+                value={taskEditData.name}
+                onChange={(e) => setTaskEditData({ ...taskEditData, name: e.target.value })}
+              />
+              <textarea
+                className={style.Description}
+                placeholder="No task description..."
+                value={taskEditData.description}
+                onChange={(e) => setTaskEditData({ ...taskEditData, description: e.target.value })}
+              ></textarea>
+              <TaskPriorityPicker
+                activePriority={taskEditData.priority}
+                setActivePriority={(priority) => setTaskEditData({ ...taskEditData, priority })}
+              />
+              <Button type="submit" className={style.Button}>
+                Confirm
+              </Button>
+            </form>
+          </>
         )}
       </div>
       {task && <div className={style.Wrapper} onClick={handleWrapperClick}></div>}

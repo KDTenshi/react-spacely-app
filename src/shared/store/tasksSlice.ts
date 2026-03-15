@@ -1,5 +1,5 @@
 import { createSlice, nanoid, type PayloadAction } from "@reduxjs/toolkit";
-import type { TColumnType, TTask } from "../types/types";
+import type { TColumnType, TTask, TTaskPriority } from "../types/types";
 import { arrayMove } from "@dnd-kit/sortable";
 
 type TasksState = {
@@ -87,13 +87,17 @@ export const tasksSlice = createSlice({
     clearEditingTaskID: (state) => {
       state.editingTaskID = null;
     },
-    editTask: (state, action: PayloadAction<{ taskID: string; name: string; description: string }>) => {
-      const { taskID, name, description } = action.payload;
+    editTask: (
+      state,
+      action: PayloadAction<{ taskID: string; name: string; description: string; priority: TTaskPriority }>,
+    ) => {
+      const { taskID, name, description, priority } = action.payload;
 
       const task = state.tasksList[taskID];
 
       task.name = name;
       task.description = description;
+      task.priority = priority;
     },
   },
 });
