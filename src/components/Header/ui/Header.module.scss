@@ -1,0 +1,30 @@
+@use "../../../shared/style/colors.scss" as c;
+@use "../../../shared/style/typography.scss" as t;
+
+.Header {
+  background: c.$WHITE;
+  border-bottom: 1px solid c.$GRAY;
+  padding: 15px 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.Logo {
+  @include t.HEADING_3();
+
+  text-transform: uppercase;
+  color: c.$BLACK;
+  user-select: none;
+
+  & span {
+    color: c.$RED;
+  }
+}
+
+.Buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
