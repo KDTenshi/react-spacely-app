@@ -1,0 +1,49 @@
+@use "../../style/colors.scss" as c;
+@use "../../style/typography.scss" as t;
+
+@mixin Link() {
+  text-decoration: none;
+  border-radius: 5px;
+  transition: all 0.25s;
+}
+
+@mixin LinkColoring($textColor, $bgColor, $borderColor, $hoverColor) {
+  background: $bgColor;
+  color: $textColor;
+  border: 1px solid $bgColor;
+
+  &:hover {
+    background: $hoverColor;
+    border-color: $borderColor;
+  }
+
+  &::selection {
+    background: $textColor;
+    color: $bgColor;
+  }
+}
+
+.Big {
+  @include t.BODY_1();
+  @include Link();
+
+  padding: 5px 15px;
+}
+
+.Medium {
+  @include t.BODY_2();
+  @include Link();
+
+  padding: 5px 10px;
+}
+
+.Small {
+  @include t.BODY_3();
+  @include Link();
+
+  padding: 5px;
+}
+
+.Light {
+  @include LinkColoring(c.$BLACK, c.$WHITE, c.$GRAY, c.$GRAY_LIGHT);
+}

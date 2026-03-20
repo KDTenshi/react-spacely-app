@@ -1,27 +1,34 @@
 import type { FC } from "react";
 import style from "./Menu.module.scss";
-import { Heading, TextItem } from "../../../shared/ui";
+import { BlockLink, Heading, TextItem } from "../../../shared/ui";
+import { useAppSelector } from "../../../app/store/appStore";
 
 const Menu: FC = () => {
+  const isMenuShown = useAppSelector((state) => state.ui.isSideMenuShown);
+
+  const className = isMenuShown ? style.Shown : style.Hidden;
+
   return (
-    <div className={style.Menu}>
+    <div className={className}>
+      <Heading level={4}>Navigation</Heading>
+      <nav className={style.Links}>
+        <BlockLink to={"/"}>Home</BlockLink>
+        <BlockLink to={"/"}>Boards</BlockLink>
+      </nav>
       <Heading level={4}>Your boards</Heading>
-      <nav className={style.Boards}>
+      <nav className={style.Links}>
         <TextItem size="medium" align="center">
           No boards here
         </TextItem>
-        <a href="/" className={style.Link}>
-          Project title
-        </a>
-        <a href="/" className={style.Link}>
-          Project title
-        </a>
-        <a href="/" className={style.Link}>
-          Project title
-        </a>
-        <a href="/" className={style.Link}>
-          Project title
-        </a>
+        <BlockLink to={"/board"} size="medium">
+          Project name
+        </BlockLink>
+        <BlockLink to={"/board"} size="medium">
+          Project name
+        </BlockLink>
+        <BlockLink to={"/board"} size="medium">
+          Project name
+        </BlockLink>
       </nav>
     </div>
   );
