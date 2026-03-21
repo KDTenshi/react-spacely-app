@@ -1,12 +1,15 @@
 import type { FC } from "react";
 import style from "./Menu.module.scss";
-import { BlockLink, Heading, TextItem } from "../../../shared/ui";
+import { BlockLink, Heading } from "../../../shared/ui";
 import { useAppSelector } from "../../../app/store/appStore";
 
 const Menu: FC = () => {
   const isMenuShown = useAppSelector((state) => state.ui.isSideMenuShown);
+  const boards = useAppSelector((state) => state.tasks.boards);
 
   const className = isMenuShown ? style.Shown : style.Hidden;
+
+  const boardsArray = Object.values(boards);
 
   return (
     <div className={className}>
@@ -17,18 +20,14 @@ const Menu: FC = () => {
       </nav>
       <Heading level={4}>Your boards</Heading>
       <nav className={style.Links}>
-        <TextItem size="medium" align="center">
-          No boards here
-        </TextItem>
-        <BlockLink to={"/board"} size="medium">
-          Project name
+        <BlockLink to={"/create"} size="medium">
+          Create new board
         </BlockLink>
-        <BlockLink to={"/board"} size="medium">
-          Project name
-        </BlockLink>
-        <BlockLink to={"/board"} size="medium">
-          Project name
-        </BlockLink>
+        {boardsArray.map((board) => (
+          <BlockLink to={`/boards/${board.id}`} size="medium" key={board.id}>
+            {board.name}
+          </BlockLink>
+        ))}
       </nav>
     </div>
   );

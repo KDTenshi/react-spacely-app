@@ -9,12 +9,13 @@ import { TaskPriorityDisplay } from "../../TaskPriorityDisplay";
 
 interface TaskCardProps {
   taskID: string;
+  boardID: string;
 }
 
-const TaskCard: FC<TaskCardProps> = ({ taskID }) => {
+const TaskCard: FC<TaskCardProps> = ({ taskID, boardID }) => {
   const { attributes, listeners, setNodeRef } = useSortable({ id: taskID, data: { type: "task" } });
 
-  const task = useAppSelector((state) => state.tasks.tasksList[taskID]);
+  const task = useAppSelector((state) => state.tasks.boards[boardID].tasksList[taskID]);
 
   const dispatch = useAppDispatch();
 

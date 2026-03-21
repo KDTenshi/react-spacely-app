@@ -8,6 +8,7 @@ import { Heading, TextItem } from "../../../shared/ui";
 
 interface ColumnProps {
   type: TColumnType;
+  boardID: string;
 }
 
 const columnTitles: ListUnion<TColumnType> = {
@@ -16,9 +17,10 @@ const columnTitles: ListUnion<TColumnType> = {
   done: "Done",
 };
 
-const Column: FC<ColumnProps> = ({ type }) => {
+const Column: FC<ColumnProps> = ({ type, boardID }) => {
   const { setNodeRef } = useSortable({ id: type, data: { type: "column" } });
-  const taskIDs = useAppSelector((state) => state.tasks.columns[type]);
+
+  const taskIDs = useAppSelector((state) => state.tasks.boards[boardID].columns[type]);
 
   return (
     <div className={style.Column} ref={setNodeRef}>
@@ -30,7 +32,7 @@ const Column: FC<ColumnProps> = ({ type }) => {
           </TextItem>
         )}
         {taskIDs.map((taskID) => (
-          <TaskCard taskID={taskID} key={taskID} />
+          <TaskCard taskID={taskID} boardID={boardID} key={taskID} />
         ))}
       </div>
     </div>

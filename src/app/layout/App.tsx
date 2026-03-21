@@ -1,11 +1,12 @@
 import type { FC } from "react";
 import "../style/App.scss";
-import { Board } from "../../components/Board";
 import { Header } from "../../components/Header";
 import { Menu } from "../../components/Menu";
 import { BrowserRouter, Routes } from "react-router";
 import { Route } from "react-router";
 import { HomePage } from "../../pages/HomePage";
+import { CreateBoardPage } from "../../pages/CreateBoardBage";
+import { BoardPage } from "../../pages/BoardPage";
 
 const App: FC = () => {
   return (
@@ -16,7 +17,9 @@ const App: FC = () => {
           <Menu />
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/board" element={<Board />} />
+            <Route path="/create" element={<CreateBoardPage />} />
+            <Route path="/boards" element={<HomePage />} />
+            <Route path="/boards/:boardID" element={<BoardPage />} />
           </Routes>
         </div>
       </div>

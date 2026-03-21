@@ -1,0 +1,33 @@
+@use "../../../shared/style/colors.scss" as c;
+@use "../../../shared/style/typography.scss" as t;
+
+.CreateBoard {
+  width: 100%;
+  height: 100%;
+  background: c.$GRAY_LIGHT;
+  display: flex;
+  justify-content: end;
+}
+
+.Content {
+  width: 50%;
+  height: 100%;
+  background: c.$WHITE;
+  border-left: 1px solid c.$GRAY;
+  padding: 15px 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 25px;
+}
+
+.Form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.Button {
+  width: max-content;
+  align-self: end;
+}

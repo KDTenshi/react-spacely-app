@@ -1,5 +1,5 @@
 import { createSlice, nanoid, type PayloadAction } from "@reduxjs/toolkit";
-import type { TColumnType, TTask, TTaskPriority } from "../types/types";
+import type { TBoard, TColumnType, TTask, TTaskPriority } from "../types/types";
 import { arrayMove } from "@dnd-kit/sortable";
 
 type TasksState = {
@@ -7,6 +7,8 @@ type TasksState = {
   columns: { [key in TColumnType]: string[] };
   selectedTaskID: string | null;
   editingTaskID: string | null;
+
+  boards: { [key in string]: TBoard };
 };
 
 const initialState: TasksState = {
@@ -18,14 +20,16 @@ const initialState: TasksState = {
   },
   selectedTaskID: null,
   editingTaskID: null,
+
+  boards: {},
 };
 
 export const tasksSlice = createSlice({
   name: "tasks",
   initialState,
   reducers: {
-    addTask: (state, action: PayloadAction<{ name: string }>) => {
-      const { name } = action.payload;
+    addTask: (state, action: PayloadAction<{ name: string; boardID: string }>) => {
+      const { name, boardID } = action.payload;
 
       const task: TTask = {
         id: nanoid(),
@@ -36,8 +40,8 @@ export const tasksSlice = createSlice({
         priority: "low",
       };
 
-      state.columns.todo.push(task.id);
-      state.tasksList[task.id] = task;
+      state.boards[boardID].tasksList[task.id] = task;
+      state.boards[boardID].columns.todo.push(task.id);
     },
     deleteTask: (state, action: PayloadAction<{ taskID: string }>) => {
       const { taskID } = action.payload;
@@ -99,6 +103,23 @@ export const tasksSlice = createSlice({
       task.description = description;
       task.priority = priority;
     },
+
+    addBoard: (state, action: PayloadAction<{ name: string }>) => {
+      const { name } = action.payload;
+
+      const board: TBoard = {
+        id: nanoid(),
+        name,
+        tasksList: {},
+        columns: {
+          todo: [],
+          doing: [],
+          done: [],
+        },
+      };
+
+      state.boards[board.id] = board;
+    },
   },
 });
 
@@ -112,4 +133,6 @@ export const {
   setEditingTaskID,
   clearEditingTaskID,
   editTask,
+
+  addBoard,
 } = tasksSlice.actions;

@@ -24,13 +24,17 @@ import { TaskCard } from "../../TaskCard";
 import { Button, Heading, Input } from "../../../shared/ui";
 import { TaskPanel } from "../../TaskPanel";
 
-const Board: FC = () => {
+interface BoardProps {
+  boardID: string;
+}
+
+const Board: FC<BoardProps> = ({ boardID }) => {
   const dispatch = useAppDispatch();
 
   const selectedTaskID = useAppSelector((state) => state.tasks.selectedTaskID);
 
-  const columns = useAppSelector((state) => state.tasks.columns);
-  const columnsTypes = Object.keys(columns) as TColumnType[];
+  const board = useAppSelector((state) => state.tasks.boards[boardID]);
+  const columns = Object.keys(board.columns) as TColumnType[];
 
   const [taskName, setTaskName] = useState("");
 
@@ -40,7 +44,7 @@ const Board: FC = () => {
     const name = taskName.trim();
 
     if (name) {
-      dispatch(addTask({ name }));
+      dispatch(addTask({ name, boardID }));
       setTaskName("");
     }
   };
@@ -93,7 +97,7 @@ const Board: FC = () => {
     <div className={style.Board}>
       <div className={style.Header}>
         <div className={style.Title}>
-          <Heading level={3}>Project title</Heading>
+          <Heading level={3}>{board.name}</Heading>
         </div>
         <form className={style.Form} onSubmit={handleAddTask}>
           <Input
@@ -115,12 +119,12 @@ const Board: FC = () => {
           collisionDetection={pointerWithin}
           autoScroll={false}
         >
-          {columnsTypes.map((columnType) => (
-            <Column type={columnType} key={columnType} />
+          {columns.map((column) => (
+            <Column type={column} boardID={boardID} key={column} />
           ))}
           {selectedTaskID && (
             <DragOverlay>
-              <TaskCard taskID={selectedTaskID} />
+              <TaskCard boardID={boardID} taskID={selectedTaskID} />
             </DragOverlay>
           )}
         </DndContext>
