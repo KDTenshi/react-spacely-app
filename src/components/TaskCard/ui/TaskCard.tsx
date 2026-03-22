@@ -1,11 +1,11 @@
 import type { FC } from "react";
 import style from "./TaskCard.module.scss";
 import { useAppDispatch, useAppSelector } from "../../../app/store/appStore";
-import { setEditingTaskID } from "../../../shared/store/tasksSlice";
 import { useSortable } from "@dnd-kit/sortable";
 import { TextItem } from "../../../shared/ui";
 import { getDateString } from "../../../shared/utils/getDateString";
 import { TaskPriorityDisplay } from "../../TaskPriorityDisplay";
+import { setEditingTaskData } from "../../../shared/store/tasksSlice";
 
 interface TaskCardProps {
   taskID: string;
@@ -25,7 +25,7 @@ const TaskCard: FC<TaskCardProps> = ({ taskID, boardID }) => {
       {...attributes}
       {...listeners}
       ref={setNodeRef}
-      onClick={() => dispatch(setEditingTaskID({ taskID: task.id }))}
+      onClick={() => dispatch(setEditingTaskData({ taskID: task.id, boardID }))}
     >
       <TextItem color="black">{task.name}</TextItem>
       <TaskPriorityDisplay priority={task.priority} />

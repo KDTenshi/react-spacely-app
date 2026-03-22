@@ -16,7 +16,7 @@ const Menu: FC = () => {
       <Heading level={4}>Navigation</Heading>
       <nav className={style.Links}>
         <BlockLink to={"/"}>Home</BlockLink>
-        <BlockLink to={"/"}>Boards</BlockLink>
+        <BlockLink to={"/boards"}>Boards</BlockLink>
       </nav>
       <Heading level={4}>Your boards</Heading>
       <nav className={style.Links}>

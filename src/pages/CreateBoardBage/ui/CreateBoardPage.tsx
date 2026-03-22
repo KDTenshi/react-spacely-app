@@ -18,7 +18,7 @@ const CreateBoardPage: FC = () => {
 
     if (name) {
       dispatch(addBoard({ name }));
-      navigate("/");
+      navigate("/boards");
     }
   };
 

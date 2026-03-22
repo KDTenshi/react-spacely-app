@@ -8,6 +8,7 @@ export type TTask = {
   description: string;
   createdAt: number;
   column: TColumnType;
+  boardID: string;
   priority: TTaskPriority;
 };
 

@@ -75,14 +75,14 @@ const Board: FC<BoardProps> = ({ boardID }) => {
 
       if (activeTaskID === overTaskID) return;
 
-      dispatch(changeTaskPosition({ activeTaskID, overTaskID }));
+      dispatch(changeTaskPosition({ activeTaskID, overTaskID, boardID }));
     }
 
     if (activeType !== overType) {
       const taskID = active.id as string;
       const column = over.id as TColumnType;
 
-      dispatch(changeTaskColumn({ taskID, column }));
+      dispatch(changeTaskColumn({ taskID, column, boardID }));
     }
   };
 

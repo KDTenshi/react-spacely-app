@@ -7,6 +7,7 @@ import { Route } from "react-router";
 import { HomePage } from "../../pages/HomePage";
 import { CreateBoardPage } from "../../pages/CreateBoardBage";
 import { BoardPage } from "../../pages/BoardPage";
+import { BoardsPage } from "../../pages/BoardsPage";
 
 const App: FC = () => {
   return (
@@ -18,7 +19,7 @@ const App: FC = () => {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/create" element={<CreateBoardPage />} />
-            <Route path="/boards" element={<HomePage />} />
+            <Route path="/boards" element={<BoardsPage />} />
             <Route path="/boards/:boardID" element={<BoardPage />} />
           </Routes>
         </div>

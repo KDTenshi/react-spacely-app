@@ -7,6 +7,9 @@
   background: c.$GRAY_LIGHT;
   display: flex;
   justify-content: end;
+  background-image: url("/bg_pattern.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .Content {

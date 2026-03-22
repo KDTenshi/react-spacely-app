@@ -6,7 +6,7 @@ type TasksState = {
   tasksList: { [key: string]: TTask };
   columns: { [key in TColumnType]: string[] };
   selectedTaskID: string | null;
-  editingTaskID: string | null;
+  editingTaskData: { id: string; boardID: string } | null;
 
   boards: { [key in string]: TBoard };
 };
@@ -19,7 +19,7 @@ const initialState: TasksState = {
     done: [],
   },
   selectedTaskID: null,
-  editingTaskID: null,
+  editingTaskData: null,
 
   boards: {},
 };
@@ -37,43 +37,54 @@ export const tasksSlice = createSlice({
         description: "",
         createdAt: Date.now(),
         column: "todo",
+        boardID,
         priority: "low",
       };
 
       state.boards[boardID].tasksList[task.id] = task;
       state.boards[boardID].columns.todo.push(task.id);
     },
-    deleteTask: (state, action: PayloadAction<{ taskID: string }>) => {
-      const { taskID } = action.payload;
+    deleteTask: (state, action: PayloadAction<{ taskID: string; boardID: string }>) => {
+      const { taskID, boardID } = action.payload;
 
-      const task = state.tasksList[taskID];
+      const task = state.boards[boardID].tasksList[taskID];
 
-      if (state.editingTaskID === taskID) {
-        state.editingTaskID = null;
+      if (state.editingTaskData?.id === taskID) {
+        state.editingTaskData = null;
       }
 
-      state.columns[task.column] = state.columns[task.column].filter((id) => id !== taskID);
-      delete state.tasksList[taskID];
+      state.boards[boardID].columns[task.column] = state.boards[boardID].columns[task.column].filter(
+        (id) => id !== taskID,
+      );
+      delete state.boards[boardID].tasksList[taskID];
     },
-    changeTaskColumn: (state, action: PayloadAction<{ taskID: string; column: TColumnType }>) => {
-      const { taskID, column } = action.payload;
+    changeTaskColumn: (state, action: PayloadAction<{ taskID: string; column: TColumnType; boardID: string }>) => {
+      const { taskID, column, boardID } = action.payload;
 
-      const task = state.tasksList[taskID];
+      const task = state.boards[boardID].tasksList[taskID];
       const oldColumn = task.column;
 
       task.column = column;
-      state.columns[oldColumn] = state.columns[oldColumn].filter((id) => id !== taskID);
-      state.columns[column].push(taskID);
+
+      state.boards[boardID].columns[oldColumn] = state.boards[boardID].columns[oldColumn].filter((id) => id !== taskID);
+      state.boards[boardID].columns[column].push(taskID);
     },
-    changeTaskPosition: (state, action: PayloadAction<{ activeTaskID: string; overTaskID: string }>) => {
-      const { activeTaskID, overTaskID } = action.payload;
+    changeTaskPosition: (
+      state,
+      action: PayloadAction<{ activeTaskID: string; overTaskID: string; boardID: string }>,
+    ) => {
+      const { activeTaskID, overTaskID, boardID } = action.payload;
 
-      const column = state.tasksList[activeTaskID].column;
+      const column = state.boards[boardID].tasksList[activeTaskID].column;
 
-      const activeTaskIDIndex = state.columns[column].findIndex((id) => id === activeTaskID);
-      const overTaskIDIndex = state.columns[column].findIndex((id) => id === overTaskID);
+      const activeTaskIDIndex = state.boards[boardID].columns[column].findIndex((id) => id === activeTaskID);
+      const overTaskIDIndex = state.boards[boardID].columns[column].findIndex((id) => id === overTaskID);
 
-      state.columns[column] = arrayMove(state.columns[column], activeTaskIDIndex, overTaskIDIndex);
+      state.boards[boardID].columns[column] = arrayMove(
+        state.boards[boardID].columns[column],
+        activeTaskIDIndex,
+        overTaskIDIndex,
+      );
     },
     setSelectedTaskID: (state, action: PayloadAction<{ taskID: string }>) => {
       const { taskID } = action.payload;
@@ -83,21 +94,27 @@ export const tasksSlice = createSlice({
     clearSelectedTaskID: (state) => {
       state.selectedTaskID = null;
     },
-    setEditingTaskID: (state, action: PayloadAction<{ taskID: string }>) => {
-      const { taskID } = action.payload;
+    setEditingTaskData: (state, action: PayloadAction<{ taskID: string; boardID: string }>) => {
+      const { taskID, boardID } = action.payload;
 
-      state.editingTaskID = taskID;
+      state.editingTaskData = { id: taskID, boardID };
     },
-    clearEditingTaskID: (state) => {
-      state.editingTaskID = null;
+    clearEditingTaskData: (state) => {
+      state.editingTaskData = null;
     },
     editTask: (
       state,
-      action: PayloadAction<{ taskID: string; name: string; description: string; priority: TTaskPriority }>,
+      action: PayloadAction<{
+        taskID: string;
+        name: string;
+        description: string;
+        priority: TTaskPriority;
+        boardID: string;
+      }>,
     ) => {
-      const { taskID, name, description, priority } = action.payload;
+      const { taskID, name, description, priority, boardID } = action.payload;
 
-      const task = state.tasksList[taskID];
+      const task = state.boards[boardID].tasksList[taskID];
 
       task.name = name;
       task.description = description;
@@ -130,8 +147,8 @@ export const {
   changeTaskPosition,
   setSelectedTaskID,
   clearSelectedTaskID,
-  setEditingTaskID,
-  clearEditingTaskID,
+  setEditingTaskData,
+  clearEditingTaskData,
   editTask,
 
   addBoard,

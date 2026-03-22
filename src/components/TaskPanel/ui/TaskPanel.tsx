@@ -1,7 +1,7 @@
 import style from "./TaskPanel.module.scss";
 import { Button, Heading } from "../../../shared/ui";
 import { useAppDispatch, useAppSelector } from "../../../app/store/appStore";
-import { clearEditingTaskID, deleteTask, editTask } from "../../../shared/store/tasksSlice";
+import { clearEditingTaskData, deleteTask, editTask } from "../../../shared/store/tasksSlice";
 import { useEffect, useState, type FC } from "react";
 import { TaskPriorityPicker } from "../../TaskPriorityPicker";
 import type { TTaskPriority } from "../../../shared/types/types";
@@ -17,7 +17,9 @@ const TaskPanel: FC = () => {
   const dispatch = useAppDispatch();
 
   const task = useAppSelector((state) =>
-    state.tasks.editingTaskID ? state.tasks.tasksList[state.tasks.editingTaskID] : null,
+    state.tasks.editingTaskData
+      ? state.tasks.boards[state.tasks.editingTaskData.boardID].tasksList[state.tasks.editingTaskData.id]
+      : null,
   );
 
   const [taskEditData, setTaskEditData] = useState<TaskEditData>({ name: "", description: "", priority: "low" });
@@ -40,13 +42,13 @@ const TaskPanel: FC = () => {
     if (name === task.name && description === task.description && priority === task.priority) return;
 
     if (name) {
-      dispatch(editTask({ taskID: task.id, name, description, priority }));
+      dispatch(editTask({ taskID: task.id, name, description, priority, boardID: task.boardID }));
     }
   };
 
   const handleWrapperClick = () => {
     handleEditTask();
-    dispatch(clearEditingTaskID());
+    dispatch(clearEditingTaskData());
   };
 
   const handleSubmit = (e: React.SubmitEvent) => {
@@ -60,7 +62,7 @@ const TaskPanel: FC = () => {
       {isDelete && task && (
         <ConfirmPopup
           message="Delete task?"
-          handleConfirm={() => dispatch(deleteTask({ taskID: task.id }))}
+          handleConfirm={() => dispatch(deleteTask({ taskID: task.id, boardID: task.boardID }))}
           closePopup={() => setIsDelete(false)}
         />
       )}
