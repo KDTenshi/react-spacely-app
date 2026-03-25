@@ -19,21 +19,20 @@ import {
   clearSelectedTaskID,
   setSelectedTaskID,
 } from "../../../shared/store/tasksSlice";
-import type { TColumnType } from "../../../shared/types/types";
+import type { TBoard, TColumnType } from "../../../shared/types/types";
 import { TaskCard } from "../../TaskCard";
 import { Button, Heading, Input } from "../../../shared/ui";
 import { TaskPanel } from "../../TaskPanel";
 
 interface BoardProps {
-  boardID: string;
+  board: TBoard;
 }
 
-const Board: FC<BoardProps> = ({ boardID }) => {
+const Board: FC<BoardProps> = ({ board }) => {
   const dispatch = useAppDispatch();
 
   const selectedTaskID = useAppSelector((state) => state.tasks.selectedTaskID);
 
-  const board = useAppSelector((state) => state.tasks.boards[boardID]);
   const columns = Object.keys(board.columns) as TColumnType[];
 
   const [taskName, setTaskName] = useState("");
@@ -44,7 +43,7 @@ const Board: FC<BoardProps> = ({ boardID }) => {
     const name = taskName.trim();
 
     if (name) {
-      dispatch(addTask({ name, boardID }));
+      dispatch(addTask({ name }));
       setTaskName("");
     }
   };
@@ -75,14 +74,14 @@ const Board: FC<BoardProps> = ({ boardID }) => {
 
       if (activeTaskID === overTaskID) return;
 
-      dispatch(changeTaskPosition({ activeTaskID, overTaskID, boardID }));
+      dispatch(changeTaskPosition({ activeTaskID, overTaskID }));
     }
 
     if (activeType !== overType) {
       const taskID = active.id as string;
       const column = over.id as TColumnType;
 
-      dispatch(changeTaskColumn({ taskID, column, boardID }));
+      dispatch(changeTaskColumn({ taskID, column }));
     }
   };
 
@@ -120,11 +119,11 @@ const Board: FC<BoardProps> = ({ boardID }) => {
           autoScroll={false}
         >
           {columns.map((column) => (
-            <Column type={column} boardID={boardID} key={column} />
+            <Column type={column} boardID={board.id} key={column} />
           ))}
           {selectedTaskID && (
             <DragOverlay>
-              <TaskCard boardID={boardID} taskID={selectedTaskID} />
+              <TaskCard boardID={board.id} taskID={selectedTaskID} />
             </DragOverlay>
           )}
         </DndContext>

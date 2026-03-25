@@ -8,6 +8,8 @@ type TasksState = {
   selectedTaskID: string | null;
   editingTaskData: { id: string; boardID: string } | null;
 
+  selectedBoardID: string | null;
+
   boards: { [key in string]: TBoard };
 };
 
@@ -21,6 +23,8 @@ const initialState: TasksState = {
   selectedTaskID: null,
   editingTaskData: null,
 
+  selectedBoardID: null,
+
   boards: {},
 };
 
@@ -28,8 +32,12 @@ export const tasksSlice = createSlice({
   name: "tasks",
   initialState,
   reducers: {
-    addTask: (state, action: PayloadAction<{ name: string; boardID: string }>) => {
-      const { name, boardID } = action.payload;
+    addTask: (state, action: PayloadAction<{ name: string }>) => {
+      const { name } = action.payload;
+
+      const boardID = state.selectedBoardID;
+
+      if (!boardID) return;
 
       const task: TTask = {
         id: nanoid(),
@@ -44,8 +52,12 @@ export const tasksSlice = createSlice({
       state.boards[boardID].tasksList[task.id] = task;
       state.boards[boardID].columns.todo.push(task.id);
     },
-    deleteTask: (state, action: PayloadAction<{ taskID: string; boardID: string }>) => {
-      const { taskID, boardID } = action.payload;
+    deleteTask: (state, action: PayloadAction<{ taskID: string }>) => {
+      const { taskID } = action.payload;
+
+      const boardID = state.selectedBoardID;
+
+      if (!boardID) return;
 
       const task = state.boards[boardID].tasksList[taskID];
 
@@ -58,8 +70,12 @@ export const tasksSlice = createSlice({
       );
       delete state.boards[boardID].tasksList[taskID];
     },
-    changeTaskColumn: (state, action: PayloadAction<{ taskID: string; column: TColumnType; boardID: string }>) => {
-      const { taskID, column, boardID } = action.payload;
+    changeTaskColumn: (state, action: PayloadAction<{ taskID: string; column: TColumnType }>) => {
+      const { taskID, column } = action.payload;
+
+      const boardID = state.selectedBoardID;
+
+      if (!boardID) return;
 
       const task = state.boards[boardID].tasksList[taskID];
       const oldColumn = task.column;
@@ -69,11 +85,12 @@ export const tasksSlice = createSlice({
       state.boards[boardID].columns[oldColumn] = state.boards[boardID].columns[oldColumn].filter((id) => id !== taskID);
       state.boards[boardID].columns[column].push(taskID);
     },
-    changeTaskPosition: (
-      state,
-      action: PayloadAction<{ activeTaskID: string; overTaskID: string; boardID: string }>,
-    ) => {
-      const { activeTaskID, overTaskID, boardID } = action.payload;
+    changeTaskPosition: (state, action: PayloadAction<{ activeTaskID: string; overTaskID: string }>) => {
+      const { activeTaskID, overTaskID } = action.payload;
+
+      const boardID = state.selectedBoardID;
+
+      if (!boardID) return;
 
       const column = state.boards[boardID].tasksList[activeTaskID].column;
 
@@ -109,10 +126,13 @@ export const tasksSlice = createSlice({
         name: string;
         description: string;
         priority: TTaskPriority;
-        boardID: string;
       }>,
     ) => {
-      const { taskID, name, description, priority, boardID } = action.payload;
+      const { taskID, name, description, priority } = action.payload;
+
+      const boardID = state.selectedBoardID;
+
+      if (!boardID) return;
 
       const task = state.boards[boardID].tasksList[taskID];
 
@@ -137,6 +157,16 @@ export const tasksSlice = createSlice({
 
       state.boards[board.id] = board;
     },
+
+    setSelectedBoardID: (state, action: PayloadAction<{ boardID: string }>) => {
+      const { boardID } = action.payload;
+
+      state.selectedBoardID = boardID;
+    },
+
+    clearSelectedBoardID: (state) => {
+      state.selectedBoardID = null;
+    },
   },
 });
 
@@ -152,4 +182,7 @@ export const {
   editTask,
 
   addBoard,
+
+  setSelectedBoardID,
+  clearSelectedBoardID,
 } = tasksSlice.actions;

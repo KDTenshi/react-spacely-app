@@ -1,16 +1,35 @@
-import type { FC } from "react";
 import style from "./BoardPage.module.scss";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { Board } from "../../../components/Board";
+import { useEffect, type FC } from "react";
+import { useAppDispatch, useAppSelector } from "../../../app/store/appStore";
+import { clearSelectedBoardID, setSelectedBoardID } from "../../../shared/store/tasksSlice";
 
 const BoardPage: FC = () => {
   const { boardID } = useParams();
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
-  if (!boardID) return;
+  const board = useAppSelector((state) => (boardID ? state.tasks.boards[boardID] : null));
+
+  useEffect(() => {
+    if (!board) {
+      navigate("/");
+      return;
+    }
+
+    dispatch(setSelectedBoardID({ boardID: board.id }));
+
+    return () => {
+      dispatch(clearSelectedBoardID());
+    };
+  }, [board, dispatch, navigate]);
+
+  if (!board) return null;
 
   return (
     <div className={style.BoardPage}>
-      <Board boardID={boardID} />
+      <Board board={board} />
     </div>
   );
 };
