@@ -5,11 +5,17 @@ type UIState = {
 };
 
 const initialState: UIState = {
-  isSideMenuShown: false,
+  isSideMenuShown: true,
 };
 
 export const uiSlice = createSlice({
   name: "ui",
   initialState,
-  reducers: {},
+  reducers: {
+    switchSideMenuStatus: (state) => {
+      state.isSideMenuShown = !state.isSideMenuShown;
+    },
+  },
 });
+
+export const { switchSideMenuStatus } = uiSlice.actions;

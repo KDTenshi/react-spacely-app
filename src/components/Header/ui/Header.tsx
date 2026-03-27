@@ -2,7 +2,7 @@ import type { FC } from "react";
 import style from "./Header.module.scss";
 import { Button } from "../../../shared/ui";
 import { useAppDispatch } from "../../../app/store/appStore";
-import { switchSideMenuStatus } from "../../../shared/store/uiSlice";
+import { switchSideMenuStatus } from "../../../store/uiSlice";
 
 const Header: FC = () => {
   const dispatch = useAppDispatch();

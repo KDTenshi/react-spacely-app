@@ -12,17 +12,17 @@ import {
   type DragStartEvent,
 } from "@dnd-kit/core";
 import { useAppDispatch, useAppSelector } from "../../../app/store/appStore";
-import {
-  addTask,
-  changeTaskColumn,
-  changeTaskPosition,
-  clearSelectedTaskID,
-  setSelectedTaskID,
-} from "../../../shared/store/tasksSlice";
 import type { TBoard, TColumnType } from "../../../shared/types/types";
 import { TaskCard } from "../../TaskCard";
 import { Button, Heading, Input } from "../../../shared/ui";
 import { TaskPanel } from "../../TaskPanel";
+import {
+  changeTaskColumn,
+  changeTaskPosition,
+  clearDraggingTaskID,
+  createTask,
+  setDraggingTaskID,
+} from "../../../store/boardsSlice";
 
 interface BoardProps {
   board: TBoard;
@@ -31,7 +31,7 @@ interface BoardProps {
 const Board: FC<BoardProps> = ({ board }) => {
   const dispatch = useAppDispatch();
 
-  const selectedTaskID = useAppSelector((state) => state.tasks.selectedTaskID);
+  const draggingTaskID = useAppSelector((state) => state.boards.draggingTaskID);
 
   const columns = Object.keys(board.columns) as TColumnType[];
 
@@ -43,7 +43,7 @@ const Board: FC<BoardProps> = ({ board }) => {
     const name = taskName.trim();
 
     if (name) {
-      dispatch(addTask({ name }));
+      dispatch(createTask({ name }));
       setTaskName("");
     }
   };
@@ -51,7 +51,7 @@ const Board: FC<BoardProps> = ({ board }) => {
   const handleDragStart = (e: DragStartEvent) => {
     const taskID = e.active.id as string;
 
-    dispatch(setSelectedTaskID({ taskID }));
+    dispatch(setDraggingTaskID(taskID));
   };
 
   const handleDragOver = (e: DragOverEvent) => {
@@ -86,7 +86,7 @@ const Board: FC<BoardProps> = ({ board }) => {
   };
 
   const handleDragEnd = () => {
-    dispatch(clearSelectedTaskID());
+    dispatch(clearDraggingTaskID());
   };
 
   const mouseSensor = useSensor(MouseSensor, { activationConstraint: { distance: 10 } });
@@ -121,9 +121,9 @@ const Board: FC<BoardProps> = ({ board }) => {
           {columns.map((column) => (
             <Column type={column} boardID={board.id} key={column} />
           ))}
-          {selectedTaskID && (
+          {draggingTaskID && (
             <DragOverlay>
-              <TaskCard boardID={board.id} taskID={selectedTaskID} />
+              <TaskCard boardID={board.id} taskID={draggingTaskID} />
             </DragOverlay>
           )}
         </DndContext>

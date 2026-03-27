@@ -5,7 +5,7 @@ import { useAppSelector } from "../../../app/store/appStore";
 
 const Menu: FC = () => {
   const isMenuShown = useAppSelector((state) => state.ui.isSideMenuShown);
-  const boards = useAppSelector((state) => state.tasks.boards);
+  const boards = useAppSelector((state) => state.boards.list);
 
   const className = isMenuShown ? style.Shown : style.Hidden;
 

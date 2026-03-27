@@ -1,11 +1,11 @@
 import style from "./TaskPanel.module.scss";
 import { Button, Heading } from "../../../shared/ui";
 import { useAppDispatch, useAppSelector } from "../../../app/store/appStore";
-import { clearEditingTaskData, deleteTask, editTask } from "../../../shared/store/tasksSlice";
 import { useEffect, useState, type FC } from "react";
 import { TaskPriorityPicker } from "../../TaskPriorityPicker";
 import type { TTaskPriority } from "../../../shared/types/types";
 import { ConfirmPopup } from "../../ConfirmPopup";
+import { clearEditingTaskID, deleteTask, editTask } from "../../../store/boardsSlice";
 
 type TaskEditData = {
   name: string;
@@ -17,8 +17,10 @@ const TaskPanel: FC = () => {
   const dispatch = useAppDispatch();
 
   const task = useAppSelector((state) =>
-    state.tasks.editingTaskData
-      ? state.tasks.boards[state.tasks.editingTaskData.boardID].tasksList[state.tasks.editingTaskData.id]
+    state.boards.editingTaskID
+      ? state.boards.selectedBoardID
+        ? state.boards.list[state.boards.selectedBoardID].tasksList[state.boards.editingTaskID]
+        : null
       : null,
   );
 
@@ -42,13 +44,13 @@ const TaskPanel: FC = () => {
     if (name === task.name && description === task.description && priority === task.priority) return;
 
     if (name) {
-      dispatch(editTask({ taskID: task.id, name, description, priority, boardID: task.boardID }));
+      dispatch(editTask({ name, description, priority }));
     }
   };
 
   const handleWrapperClick = () => {
     handleEditTask();
-    dispatch(clearEditingTaskData());
+    dispatch(clearEditingTaskID());
   };
 
   const handleSubmit = (e: React.SubmitEvent) => {
@@ -62,7 +64,7 @@ const TaskPanel: FC = () => {
       {isDelete && task && (
         <ConfirmPopup
           message="Delete task?"
-          handleConfirm={() => dispatch(deleteTask({ taskID: task.id, boardID: task.boardID }))}
+          handleConfirm={() => dispatch(deleteTask({ taskID: task.id }))}
           closePopup={() => setIsDelete(false)}
         />
       )}

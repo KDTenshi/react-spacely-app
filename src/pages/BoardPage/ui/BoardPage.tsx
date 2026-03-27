@@ -3,14 +3,14 @@ import { useNavigate, useParams } from "react-router";
 import { Board } from "../../../components/Board";
 import { useEffect, type FC } from "react";
 import { useAppDispatch, useAppSelector } from "../../../app/store/appStore";
-import { clearSelectedBoardID, setSelectedBoardID } from "../../../shared/store/tasksSlice";
+import { clearSelectedBoardID, setSelectedBoardID } from "../../../store/boardsSlice";
 
 const BoardPage: FC = () => {
   const { boardID } = useParams();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const board = useAppSelector((state) => (boardID ? state.tasks.boards[boardID] : null));
+  const board = useAppSelector((state) => (boardID ? state.boards.list[boardID] : null));
 
   useEffect(() => {
     if (!board) {
@@ -18,7 +18,7 @@ const BoardPage: FC = () => {
       return;
     }
 
-    dispatch(setSelectedBoardID({ boardID: board.id }));
+    dispatch(setSelectedBoardID(board.id));
 
     return () => {
       dispatch(clearSelectedBoardID());

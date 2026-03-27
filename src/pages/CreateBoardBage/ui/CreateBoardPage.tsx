@@ -2,8 +2,8 @@ import { useState, type FC } from "react";
 import style from "./CreateBoardPage.module.scss";
 import { Button, Heading, Input } from "../../../shared/ui";
 import { useAppDispatch } from "../../../app/store/appStore";
-import { addBoard } from "../../../shared/store/tasksSlice";
 import { useNavigate } from "react-router";
+import { createBoard } from "../../../store/boardsSlice";
 
 const CreateBoardPage: FC = () => {
   const dispatch = useAppDispatch();
@@ -17,7 +17,7 @@ const CreateBoardPage: FC = () => {
     const name = boardName.trim();
 
     if (name) {
-      dispatch(addBoard({ name }));
+      dispatch(createBoard({ name }));
       navigate("/boards");
     }
   };

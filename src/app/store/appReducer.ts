@@ -1,8 +1,8 @@
 import { combineReducers } from "@reduxjs/toolkit";
-import { tasksSlice } from "../../shared/store/tasksSlice";
-import { uiSlice } from "../../shared/store/uiSlice";
+import { boardsSlice } from "../../store/boardsSlice";
+import { uiSlice } from "../../store/uiSlice";
 
 export const appReducer = combineReducers({
-  [tasksSlice.reducerPath]: tasksSlice.reducer,
+  [boardsSlice.reducerPath]: boardsSlice.reducer,
   [uiSlice.reducerPath]: uiSlice.reducer,
 });

@@ -5,7 +5,7 @@ import { useSortable } from "@dnd-kit/sortable";
 import { TextItem } from "../../../shared/ui";
 import { getDateString } from "../../../shared/utils/getDateString";
 import { TaskPriorityDisplay } from "../../TaskPriorityDisplay";
-import { setEditingTaskData } from "../../../shared/store/tasksSlice";
+import { setEditingTaskID } from "../../../store/boardsSlice";
 
 interface TaskCardProps {
   taskID: string;
@@ -15,7 +15,7 @@ interface TaskCardProps {
 const TaskCard: FC<TaskCardProps> = ({ taskID, boardID }) => {
   const { attributes, listeners, setNodeRef } = useSortable({ id: taskID, data: { type: "task" } });
 
-  const task = useAppSelector((state) => state.tasks.boards[boardID].tasksList[taskID]);
+  const task = useAppSelector((state) => state.boards.list[boardID].tasksList[taskID]);
 
   const dispatch = useAppDispatch();
 
@@ -25,7 +25,7 @@ const TaskCard: FC<TaskCardProps> = ({ taskID, boardID }) => {
       {...attributes}
       {...listeners}
       ref={setNodeRef}
-      onClick={() => dispatch(setEditingTaskData({ taskID: task.id, boardID }))}
+      onClick={() => dispatch(setEditingTaskID(taskID))}
     >
       <TextItem color="black">{task.name}</TextItem>
       <TaskPriorityDisplay priority={task.priority} />
