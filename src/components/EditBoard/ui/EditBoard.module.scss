@@ -1,0 +1,40 @@
+@use "../../../shared/style/colors.scss" as c;
+@use "../../../shared/style/typography.scss" as t;
+
+.EditBoard {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 50%;
+  align-self: center;
+  background: c.$WHITE;
+  padding: 15px 25px;
+  border: 1px solid c.$GRAY;
+  border-radius: 5px;
+}
+
+.Input,
+.Textarea {
+  color: c.$GRAY_DARK;
+  padding: 5px 15px;
+  background: c.$GRAY_LIGHT;
+  border: 1px solid c.$GRAY;
+  border-radius: 5px;
+  outline: 0;
+}
+
+.Input {
+  @include t.BODY_1();
+}
+
+.Textarea {
+  @include t.BODY_2();
+
+  resize: none;
+  height: 15vh;
+}
+
+.Button {
+  width: max-content;
+  align-self: end;
+}

@@ -14,7 +14,7 @@ import {
 import { useAppDispatch, useAppSelector } from "../../../app/store/appStore";
 import type { TBoard, TColumnType } from "../../../shared/types/types";
 import { TaskCard } from "../../TaskCard";
-import { Button, Heading, Input } from "../../../shared/ui";
+import { BlockLink, Button, Heading, Input } from "../../../shared/ui";
 import { TaskPanel } from "../../TaskPanel";
 import {
   changeTaskColumn,
@@ -97,6 +97,7 @@ const Board: FC<BoardProps> = ({ board }) => {
       <div className={style.Header}>
         <div className={style.Title}>
           <Heading level={3}>{board.name}</Heading>
+          <BlockLink to={"edit"}>Edit</BlockLink>
         </div>
         <form className={style.Form} onSubmit={handleAddTask}>
           <Input

@@ -8,6 +8,9 @@ import { HomePage } from "../../pages/HomePage";
 import { CreateBoardPage } from "../../pages/CreateBoardBage";
 import { BoardPage } from "../../pages/BoardPage";
 import { BoardsPage } from "../../pages/BoardsPage";
+import { EditBoardPage } from "../../pages/EditBoardPage";
+import { LoginPage } from "../../pages/LoginPage";
+import { RegisterPage } from "../../pages/RegisterPage";
 
 const App: FC = () => {
   return (
@@ -21,6 +24,9 @@ const App: FC = () => {
             <Route path="/create" element={<CreateBoardPage />} />
             <Route path="/boards" element={<BoardsPage />} />
             <Route path="/boards/:boardID" element={<BoardPage />} />
+            <Route path="/boards/:boardID/edit" element={<EditBoardPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/registration" element={<RegisterPage />} />
           </Routes>
         </div>
       </div>
