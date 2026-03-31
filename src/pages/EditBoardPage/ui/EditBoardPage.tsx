@@ -1,10 +1,10 @@
 import { useEffect, type FC } from "react";
 import style from "./EditBoardPage.module.scss";
 import { useParams } from "react-router";
-import { BlockLink, Heading } from "../../../shared/ui";
 import { EditBoard } from "../../../components/EditBoard";
 import { useAppDispatch, useAppSelector } from "../../../app/store/appStore";
 import { clearSelectedBoardID, setSelectedBoardID } from "../../../store/boardsSlice";
+import { BlockLink, Heading } from "../../../shared/ui";
 
 const EditBoardPage: FC = () => {
   const { boardID } = useParams();
@@ -12,7 +12,10 @@ const EditBoardPage: FC = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (board) dispatch(setSelectedBoardID(board.id));
+    if (board) {
+      document.title = `Edit ${board.name}`;
+      dispatch(setSelectedBoardID(board.id));
+    }
 
     return () => {
       dispatch(clearSelectedBoardID());
@@ -23,11 +26,13 @@ const EditBoardPage: FC = () => {
 
   return (
     <div className={style.EditBoard}>
-      <div className={style.Heading}>
-        <BlockLink to={`/boards/${boardID}`}>Go back</BlockLink>
-        <Heading level={4}>Edit board</Heading>
+      <div className={style.Header}>
+        <Heading level={3}>Edit board</Heading>
+        <BlockLink to={`/boards/${board.id}`}>To board</BlockLink>
       </div>
-      <EditBoard board={board} />
+      <div className={style.Content}>
+        <EditBoard board={board} />
+      </div>
     </div>
   );
 };

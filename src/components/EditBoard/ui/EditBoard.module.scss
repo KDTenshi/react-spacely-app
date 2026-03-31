@@ -6,11 +6,11 @@
   flex-direction: column;
   gap: 10px;
   width: 50%;
+  height: 100%;
   align-self: center;
   background: c.$WHITE;
   padding: 15px 25px;
-  border: 1px solid c.$GRAY;
-  border-radius: 5px;
+  border-left: 1px solid c.$GRAY;
 }
 
 .Input,
@@ -24,14 +24,14 @@
 }
 
 .Input {
-  @include t.BODY_1();
+  @include t.HEADING_4();
 }
 
 .Textarea {
   @include t.BODY_2();
 
   resize: none;
-  height: 15vh;
+  height: 25vh;
 }
 
 .Button {

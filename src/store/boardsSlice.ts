@@ -42,6 +42,14 @@ export const boardsSlice = createSlice({
       state.list[board.id] = board;
     },
 
+    deleteBoard: (state) => {
+      const boardID = state.selectedBoardID;
+
+      if (!boardID) return;
+
+      delete state.list[boardID];
+    },
+
     editBoard: (state, action: PayloadAction<{ name: string; description: string }>) => {
       const { name, description } = action.payload;
 
@@ -160,6 +168,7 @@ export const boardsSlice = createSlice({
 
 export const {
   createBoard,
+  deleteBoard,
   editBoard,
   createTask,
   deleteTask,

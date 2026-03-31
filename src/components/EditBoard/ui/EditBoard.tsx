@@ -2,8 +2,10 @@ import { useState, type FC } from "react";
 import style from "./EditBoard.module.scss";
 import type { TBoard } from "../../../shared/types/types";
 import { useAppDispatch } from "../../../app/store/appStore";
-import { editBoard } from "../../../store/boardsSlice";
+import { deleteBoard, editBoard } from "../../../store/boardsSlice";
 import { Button } from "../../../shared/ui";
+import { ConfirmPopup } from "../../ConfirmPopup";
+import { useNavigate } from "react-router";
 
 interface EditBoardProps {
   board: TBoard;
@@ -12,6 +14,10 @@ interface EditBoardProps {
 const EditBoard: FC<EditBoardProps> = ({ board }) => {
   const [boardName, setBoardName] = useState(board.name);
   const [boardDescription, setBoardDescription] = useState(board.description);
+
+  const [isDelete, setIsDelete] = useState(false);
+
+  const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
 
@@ -26,8 +32,19 @@ const EditBoard: FC<EditBoardProps> = ({ board }) => {
     dispatch(editBoard({ name, description }));
   };
 
+  const handleBoardDelete = () => {
+    dispatch(deleteBoard());
+    navigate("/", { replace: true });
+  };
+
   return (
     <form className={style.EditBoard} onSubmit={handleSubmit}>
+      {isDelete && (
+        <ConfirmPopup message="Delete board?" handleConfirm={handleBoardDelete} closePopup={() => setIsDelete(false)} />
+      )}
+      <Button size="big" className={style.Button} onClick={() => setIsDelete(true)}>
+        Delete
+      </Button>
       <input
         type="text"
         placeholder="Board name..."
@@ -41,7 +58,7 @@ const EditBoard: FC<EditBoardProps> = ({ board }) => {
         value={boardDescription}
         onChange={(e) => setBoardDescription(e.target.value)}
       ></textarea>
-      <Button type="submit" className={style.Button}>
+      <Button type="submit" size="big" className={style.Button}>
         Edit
       </Button>
     </form>

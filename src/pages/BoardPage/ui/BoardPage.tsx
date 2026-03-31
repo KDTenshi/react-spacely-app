@@ -18,6 +18,7 @@ const BoardPage: FC = () => {
       return;
     }
 
+    document.title = board.name;
     dispatch(setSelectedBoardID(board.id));
 
     return () => {

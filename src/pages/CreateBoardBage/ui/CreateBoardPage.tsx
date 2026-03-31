@@ -1,4 +1,4 @@
-import { useState, type FC } from "react";
+import { useEffect, useState, type FC } from "react";
 import style from "./CreateBoardPage.module.scss";
 import { Button, Heading, Input } from "../../../shared/ui";
 import { useAppDispatch } from "../../../app/store/appStore";
@@ -10,6 +10,10 @@ const CreateBoardPage: FC = () => {
   const navigate = useNavigate();
 
   const [boardName, setBoardName] = useState("");
+
+  useEffect(() => {
+    document.title = "Create New Board";
+  }, []);
 
   const handleSubmit = (e: React.SubmitEvent) => {
     e.preventDefault();

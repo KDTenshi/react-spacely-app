@@ -11,15 +11,17 @@
 }
 
 .Logo {
-  @include t.HEADING_3();
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
 
-  text-transform: uppercase;
-  color: c.$BLACK;
-  user-select: none;
-
-  & span {
-    color: c.$RED;
-  }
+.Button {
+  background: c.$WHITE;
+  border: 0;
+  outline: 0;
+  cursor: pointer;
 }
 
 .Buttons {
