@@ -1,9 +1,9 @@
 import style from "./BoardPage.module.scss";
 import { useNavigate, useParams } from "react-router";
-import { Board } from "../../../components/Board";
 import { useEffect, type FC } from "react";
 import { useAppDispatch, useAppSelector } from "../../../app/store/appStore";
 import { clearSelectedBoardID, setSelectedBoardID } from "../../../store/boardsSlice";
+import { Board } from "../../../features/Tasks/components/Board";
 
 const BoardPage: FC = () => {
   const { boardID } = useParams();
