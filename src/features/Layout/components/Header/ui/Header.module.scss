@@ -1,5 +1,4 @@
-@use "../../../shared/style/colors.scss" as c;
-@use "../../../shared/style/typography.scss" as t;
+@use "../../../../../shared/style/colors.scss" as c;
 
 .Header {
   background: c.$WHITE;
@@ -24,7 +23,7 @@
   cursor: pointer;
 }
 
-.Buttons {
+.Links {
   display: flex;
   align-items: center;
   justify-content: center;

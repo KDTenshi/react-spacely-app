@@ -3,6 +3,7 @@ import style from "./Board.module.scss";
 import type { TBoard, TColumnType } from "../../../../../shared/types/types";
 import { Heading, BlockLink, Input, Button } from "../../../../../shared/ui";
 import { Column } from "../../Column";
+import { Panel } from "../../Panel";
 
 interface BoardProps {
   board: TBoard;
@@ -28,6 +29,7 @@ const Board: FC<BoardProps> = ({ board }) => {
         </div>
       </div>
       <div className={style.Body}>
+        <Panel />
         {columns.map((column) => (
           <Column columnType={column} key={column} />
         ))}

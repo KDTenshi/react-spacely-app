@@ -1,7 +1,6 @@
-@use "../../../shared/style/colors.scss" as c;
-@use "../../../shared/style/typography.scss" as t;
+@use "../../../../../shared/style/colors.scss" as c;
 
-@mixin Menu {
+@mixin SideMenu {
   flex-shrink: 0;
   width: 20vw;
   padding: 15px 25px;
@@ -15,11 +14,11 @@
 }
 
 .Shown {
-  @include Menu();
+  @include SideMenu();
 }
 
 .Hidden {
-  @include Menu();
+  @include SideMenu();
 
   display: none; // TEMPORARY | REWRITE TO HIDE WITH ANIMATION LATER
 }
@@ -31,21 +30,4 @@
   display: flex;
   flex-direction: column;
   gap: 5px;
-}
-
-.Link {
-  @include t.BODY_2();
-
-  color: c.$GRAY_DARK;
-  text-decoration: none;
-  padding: 5px 10px;
-  border-radius: 5px;
-  background: c.$WHITE;
-  border: 1px solid c.$WHITE;
-  transition: all 0.25s;
-
-  &:hover {
-    background: c.$GRAY_LIGHT;
-    border-color: c.$GRAY;
-  }
 }

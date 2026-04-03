@@ -1,8 +1,8 @@
 import type { FC } from "react";
 import style from "./Header.module.scss";
-import { useAppDispatch } from "../../../app/store/appStore";
-import { switchSideMenuStatus } from "../../../store/uiSlice";
-import { BlockLink, Icon, Logo } from "../../../shared/ui";
+import { BlockLink, Icon, Logo } from "../../../../../shared/ui";
+import { useAppDispatch } from "../../../../../app/store/appStore";
+import { switchSideMenuStatus } from "../../../store/layoutSlice";
 
 const Header: FC = () => {
   const dispatch = useAppDispatch();
@@ -16,10 +16,10 @@ const Header: FC = () => {
         <Logo />
       </div>
       <nav className={style.Links}>
-        <BlockLink size="medium" to={"/login"}>
+        <BlockLink to={"/login"} size="medium">
           Login
         </BlockLink>
-        <BlockLink size="medium" to={"/registration"}>
+        <BlockLink to={"/registration"} size="medium">
           Register
         </BlockLink>
       </nav>

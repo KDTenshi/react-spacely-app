@@ -1,7 +1,5 @@
 import type { FC } from "react";
 import "../style/App.scss";
-import { Header } from "../../components/Header";
-import { Menu } from "../../components/Menu";
 import { BrowserRouter, Routes } from "react-router";
 import { Route } from "react-router";
 import { HomePage } from "../../pages/HomePage";
@@ -11,6 +9,8 @@ import { BoardsPage } from "../../pages/BoardsPage";
 import { EditBoardPage } from "../../pages/EditBoardPage";
 import { LoginPage } from "../../pages/LoginPage";
 import { RegisterPage } from "../../pages/RegisterPage";
+import { Header } from "../../features/Layout/components/Header";
+import { SideMenu } from "../../features/Layout/components/SideMenu";
 
 const App: FC = () => {
   return (
@@ -18,7 +18,7 @@ const App: FC = () => {
       <div className="App">
         <Header />
         <div className="Body">
-          <Menu />
+          <SideMenu />
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/create" element={<CreateBoardPage />} />
