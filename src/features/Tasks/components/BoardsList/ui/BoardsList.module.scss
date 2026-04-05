@@ -1,0 +1,7 @@
+@use "../../../../../shared/style/colors.scss" as c;
+
+.Boards {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

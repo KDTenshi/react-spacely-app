@@ -3,7 +3,7 @@ import style from "./CreateBoardPage.module.scss";
 import { Button, Heading, Input } from "../../../shared/ui";
 import { useAppDispatch } from "../../../app/store/appStore";
 import { useNavigate } from "react-router";
-import { createBoard } from "../../../store/boardsSlice";
+import { createBoard } from "../../../features/Tasks/store/tasksSlice";
 
 const CreateBoardPage: FC = () => {
   const dispatch = useAppDispatch();

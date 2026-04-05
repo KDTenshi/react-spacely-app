@@ -1,8 +1,40 @@
 import type { FC } from "react";
 import style from "./Card.module.scss";
+import { useAppDispatch, useAppSelector } from "../../../../../app/store/appStore";
+import { useSortable } from "@dnd-kit/sortable";
+import { TextItem } from "../../../../../shared/ui";
+import { getDateString } from "../../../../../shared/utils/getDateString";
+import { setEditingTaskID } from "../../../store/tasksSlice";
+import { PriorityDisplay } from "../../PriorityDisplay";
 
-const Card: FC = () => {
-  return <div className={style.Card}></div>;
+interface CardProps {
+  taskID: string;
+}
+
+const Card: FC<CardProps> = ({ taskID }) => {
+  const { attributes, listeners, setNodeRef } = useSortable({ id: taskID, data: { type: "task" } });
+
+  const task = useAppSelector((state) =>
+    state.tasks.selectedBoardID ? state.tasks.boardsList[state.tasks.selectedBoardID].tasksList[taskID] : null,
+  );
+
+  const dispatch = useAppDispatch();
+
+  if (!task) return null;
+
+  return (
+    <div
+      className={style.Card}
+      {...attributes}
+      {...listeners}
+      ref={setNodeRef}
+      onClick={() => dispatch(setEditingTaskID(taskID))}
+    >
+      <TextItem color="black">{task.name}</TextItem>
+      <PriorityDisplay priority={task.priority} />
+      <TextItem size="medium">Created at: {getDateString(task.createdAt)}</TextItem>
+    </div>
+  );
 };
 
 export default Card;

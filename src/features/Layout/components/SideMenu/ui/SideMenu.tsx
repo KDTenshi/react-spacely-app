@@ -2,6 +2,7 @@ import type { FC } from "react";
 import style from "./SideMenu.module.scss";
 import { BlockLink, Heading } from "../../../../../shared/ui";
 import { useAppSelector } from "../../../../../app/store/appStore";
+import { BoardsList } from "../../../../Tasks/components/BoardsList";
 
 const SideMenu: FC = () => {
   const isShown = useAppSelector((state) => state.layout.isSideMenuShown);
@@ -20,6 +21,7 @@ const SideMenu: FC = () => {
         <BlockLink to={"/create"} size="medium">
           Create new board
         </BlockLink>
+        <BoardsList />
       </nav>
     </div>
   );

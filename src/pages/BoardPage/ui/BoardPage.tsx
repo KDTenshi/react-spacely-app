@@ -2,15 +2,15 @@ import style from "./BoardPage.module.scss";
 import { useNavigate, useParams } from "react-router";
 import { useEffect, type FC } from "react";
 import { useAppDispatch, useAppSelector } from "../../../app/store/appStore";
-import { clearSelectedBoardID, setSelectedBoardID } from "../../../store/boardsSlice";
 import { Board } from "../../../features/Tasks/components/Board";
+import { clearSelectedBoardID, setSelectedBoardID } from "../../../features/Tasks/store/tasksSlice";
 
 const BoardPage: FC = () => {
   const { boardID } = useParams();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const board = useAppSelector((state) => (boardID ? state.boards.list[boardID] : null));
+  const board = useAppSelector((state) => (boardID ? state.tasks.boardsList[boardID] : null));
 
   useEffect(() => {
     if (!board) {
