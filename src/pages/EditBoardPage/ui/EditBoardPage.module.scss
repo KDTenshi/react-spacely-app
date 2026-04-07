@@ -1,9 +1,6 @@
 @use "../../../shared/style/colors.scss" as c;
 
-.EditBoard {
-  width: 100%;
-  height: 100%;
-  background: c.$GRAY_LIGHT;
+.Edit {
   display: flex;
   flex-direction: column;
 }

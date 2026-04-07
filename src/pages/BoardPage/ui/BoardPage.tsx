@@ -4,6 +4,7 @@ import { useEffect, type FC } from "react";
 import { useAppDispatch, useAppSelector } from "../../../app/store/appStore";
 import { Board } from "../../../features/Tasks/components/Board";
 import { clearSelectedBoardID, setSelectedBoardID } from "../../../features/Tasks/store/tasksSlice";
+import { Page } from "../../Page";
 
 const BoardPage: FC = () => {
   const { boardID } = useParams();
@@ -18,7 +19,6 @@ const BoardPage: FC = () => {
       return;
     }
 
-    document.title = board.name;
     dispatch(setSelectedBoardID(board.id));
 
     return () => {
@@ -29,9 +29,9 @@ const BoardPage: FC = () => {
   if (!board) return null;
 
   return (
-    <div className={style.BoardPage}>
+    <Page title={board.name} className={style.Board}>
       <Board board={board} />
-    </div>
+    </Page>
   );
 };
 

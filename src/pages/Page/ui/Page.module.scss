@@ -1,0 +1,19 @@
+@use "../../../shared/style/colors.scss" as c;
+
+@mixin Page {
+  width: 100%;
+  height: 100%;
+  background: c.$GRAY_LIGHT;
+}
+
+.Image {
+  @include Page();
+
+  background-image: url("/bg_pattern.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.Color {
+  @include Page();
+}

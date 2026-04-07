@@ -1,16 +1,13 @@
-import { useEffect, type FC } from "react";
+import type { FC } from "react";
 import style from "./BoardsPage.module.scss";
 import { Heading } from "../../../shared/ui";
+import { Page } from "../../Page";
 
 const BoardsPage: FC = () => {
-  useEffect(() => {
-    document.title = "Boards Page";
-  }, []);
-
   return (
-    <div className={style.Boards}>
+    <Page title="BOARDS" className={style.Boards} background="image">
       <Heading level={1}>Boards page</Heading>
-    </div>
+    </Page>
   );
 };
 

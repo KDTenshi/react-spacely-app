@@ -1,19 +1,16 @@
-import { useEffect, useState, type FC } from "react";
+import { useState, type FC } from "react";
 import style from "./CreateBoardPage.module.scss";
 import { Button, Heading, Input } from "../../../shared/ui";
 import { useAppDispatch } from "../../../app/store/appStore";
 import { useNavigate } from "react-router";
 import { createBoard } from "../../../features/Tasks/store/tasksSlice";
+import { Page } from "../../Page";
 
 const CreateBoardPage: FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const [boardName, setBoardName] = useState("");
-
-  useEffect(() => {
-    document.title = "Create New Board";
-  }, []);
 
   const handleSubmit = (e: React.SubmitEvent) => {
     e.preventDefault();
@@ -27,7 +24,7 @@ const CreateBoardPage: FC = () => {
   };
 
   return (
-    <div className={style.CreateBoard}>
+    <Page title="CREATE BOARD" className={style.Create} background="image">
       <div className={style.Content}>
         <Heading level={3}>Create new board</Heading>
         <form className={style.Form} onSubmit={handleSubmit}>
@@ -37,7 +34,7 @@ const CreateBoardPage: FC = () => {
           </Button>
         </form>
       </div>
-    </div>
+    </Page>
   );
 };
 

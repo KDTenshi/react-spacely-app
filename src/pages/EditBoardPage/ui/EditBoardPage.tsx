@@ -5,6 +5,7 @@ import { useAppDispatch, useAppSelector } from "../../../app/store/appStore";
 import { BlockLink, Heading } from "../../../shared/ui";
 import { clearSelectedBoardID, setSelectedBoardID } from "../../../features/Tasks/store/tasksSlice";
 import { EditBoard } from "../../../features/Tasks/components/EditBoard";
+import { Page } from "../../Page";
 
 const EditBoardPage: FC = () => {
   const { boardID } = useParams();
@@ -13,7 +14,6 @@ const EditBoardPage: FC = () => {
 
   useEffect(() => {
     if (board) {
-      document.title = `Edit ${board.name}`;
       dispatch(setSelectedBoardID(board.id));
     }
 
@@ -25,7 +25,7 @@ const EditBoardPage: FC = () => {
   if (!board) return null;
 
   return (
-    <div className={style.EditBoard}>
+    <Page title={`EDIT ${board.name}`} className={style.Edit} background="image">
       <div className={style.Header}>
         <Heading level={3}>Edit board</Heading>
         <BlockLink to={`/boards/${board.id}`}>To board</BlockLink>
@@ -33,7 +33,7 @@ const EditBoardPage: FC = () => {
       <div className={style.Content}>
         <EditBoard board={board} />
       </div>
-    </div>
+    </Page>
   );
 };
 
