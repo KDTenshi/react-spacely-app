@@ -1,7 +1,13 @@
 @use "../../../../../shared/style/colors.scss" as c;
 
-.Boards {
+.Compact {
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+.Banner {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
 }

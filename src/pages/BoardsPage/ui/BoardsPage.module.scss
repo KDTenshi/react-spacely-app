@@ -2,6 +2,27 @@
 
 .Boards {
   display: flex;
-  align-items: center;
+  align-items: start;
   justify-content: center;
+  padding: 75px 125px;
+}
+
+.List {
+  background: c.$WHITE;
+  padding: 25px 50px;
+  border-radius: 5px;
+  border: 1px solid c.$GRAY;
+  width: 100%;
+}
+
+.Heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.List {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }

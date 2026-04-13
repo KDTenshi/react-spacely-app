@@ -1,0 +1,12 @@
+@use "../../../../../shared/style/colors.scss" as c;
+
+.Banner {
+  width: 100%;
+  background: c.$WHITE;
+  padding: 25px 50px;
+  border: 1px solid c.$GRAY;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}

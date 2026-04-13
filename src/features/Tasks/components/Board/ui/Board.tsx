@@ -96,7 +96,7 @@ const Board: FC<BoardProps> = ({ board }) => {
     <div className={style.Board}>
       <div className={style.Head}>
         <div className={style.Info}>
-          <Heading level={4}>Board name</Heading>
+          <Heading level={4}>{board.name}</Heading>
           <BlockLink to={"edit"} size="medium">
             Edit
           </BlockLink>
