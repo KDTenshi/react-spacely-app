@@ -1,9 +1,9 @@
 import { useEffect, useState, type FC } from "react";
 import style from "./Panel.module.scss";
-import { Button, Heading } from "../../../../../shared/ui";
+import { Button, ConfirmPopup, Heading, Icon } from "../../../../../shared/ui";
 import { useAppDispatch, useAppSelector } from "../../../../../app/store/appStore";
 import type { TTaskPriority } from "../../../../../shared/types/types";
-import { clearEditingTaskID, editTask } from "../../../store/tasksSlice";
+import { clearEditingTaskID, deleteTask, editTask } from "../../../store/tasksSlice";
 import { PriorityPicker } from "../../PriorityPicker";
 
 const Panel: FC = () => {
@@ -20,6 +20,8 @@ const Panel: FC = () => {
   const [taskName, setTaskName] = useState("");
   const [taskDescription, setTaskDescription] = useState("");
   const [priority, setPriority] = useState<TTaskPriority>("low");
+
+  const [isDelete, setIsDelete] = useState(false);
 
   useEffect(() => {
     if (task) {
@@ -50,12 +52,25 @@ const Panel: FC = () => {
     dispatch(clearEditingTaskID());
   };
 
+  const handleDelete = () => {
+    if (task) {
+      dispatch(deleteTask({ taskID: task.id }));
+    }
+  };
+
   return (
     <>
+      {isDelete && task && (
+        <ConfirmPopup message="Delete task?" onConfirm={handleDelete} hidePopup={() => setIsDelete(false)} />
+      )}
       <div className={task ? style.Shown : style.Hidden}>
         <Heading level={3}>Task details</Heading>
         {task && (
           <form className={style.Form} onSubmit={handleSubmit}>
+            <Button className={style.Button} type="button" onClick={() => setIsDelete(true)}>
+              <Icon icon="delete" size="small" />
+              Delete
+            </Button>
             <input
               type="text"
               placeholder="Task name..."

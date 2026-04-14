@@ -1,7 +1,7 @@
 import { useState, type FC } from "react";
 import style from "./Board.module.scss";
 import type { TBoard, TColumnType } from "../../../../../shared/types/types";
-import { Heading, BlockLink, Input, Button } from "../../../../../shared/ui";
+import { Heading, BlockLink, Input, Button, Icon } from "../../../../../shared/ui";
 import { Column } from "../../Column";
 import { Panel } from "../../Panel";
 import {
@@ -96,7 +96,10 @@ const Board: FC<BoardProps> = ({ board }) => {
     <div className={style.Board}>
       <div className={style.Head}>
         <div className={style.Info}>
-          <Heading level={4}>{board.name}</Heading>
+          <Heading level={4}>
+            <Icon icon="view_kanban" size="medium" />
+            {board.name}
+          </Heading>
           <BlockLink to={"edit"} size="medium">
             Edit
           </BlockLink>
@@ -109,7 +112,10 @@ const Board: FC<BoardProps> = ({ board }) => {
               value={taskName}
               onChange={(e) => setTaskName(e.target.value)}
             />
-            <Button type="submit">Add task</Button>
+            <Button type="submit">
+              <Icon icon="add" size="small" />
+              Add task
+            </Button>
           </form>
         </div>
       </div>

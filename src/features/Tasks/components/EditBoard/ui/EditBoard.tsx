@@ -4,8 +4,7 @@ import type { TBoard } from "../../../../../shared/types/types";
 import { useNavigate } from "react-router";
 import { useAppDispatch } from "../../../../../app/store/appStore";
 import { deleteBoard, editBoard } from "../../../store/tasksSlice";
-import { ConfirmPopup } from "../../../../Layout/components/ConfirmPopup";
-import { Button } from "../../../../../shared/ui";
+import { Button, ConfirmPopup, Icon } from "../../../../../shared/ui";
 
 interface EditBoardProps {
   board: TBoard;
@@ -36,12 +35,14 @@ const EditBoard: FC<EditBoardProps> = ({ board }) => {
     dispatch(deleteBoard());
     navigate("/", { replace: true });
   };
+
   return (
     <form className={style.EditBoard} onSubmit={handleSubmit}>
       {isDelete && (
         <ConfirmPopup message="Delete board?" onConfirm={handleBoardDelete} hidePopup={() => setIsDelete(false)} />
       )}
-      <Button size="big" className={style.Button} onClick={() => setIsDelete(true)}>
+      <Button size="medium" className={style.Button} onClick={() => setIsDelete(true)}>
+        <Icon icon="delete" size="small" />
         Delete
       </Button>
       <input

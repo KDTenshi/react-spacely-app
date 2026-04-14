@@ -5,5 +5,6 @@ import Input from "./Input/Input";
 import BlockLink from "./BlockLink/BlockLink";
 import Icon from "./Icon/Icon";
 import Logo from "./Logo/Logo";
+import ConfirmPopup from "./ConfirmPopup/ConfirmPopup";
 
-export { Heading, TextItem, Button, Input, BlockLink, Icon, Logo };
+export { Heading, TextItem, Button, Input, BlockLink, Icon, Logo, ConfirmPopup };

@@ -1,14 +1,23 @@
 import type { FC } from "react";
 import style from "./Icon.module.scss";
+import type { ListUnion } from "../../types/types";
 
-type IconType = "menu";
+type IconType = "add" | "delete" | "home" | "menu" | "view_kanban";
+type IconSize = "big" | "medium" | "small";
 
 interface IconProps {
   icon: IconType;
+  size?: IconSize;
 }
 
-const Icon: FC<IconProps> = ({ icon }) => {
-  const iconClassName = [style.Icon, "material-symbols-outlined"].join(" ");
+const sizeStyles: ListUnion<IconSize> = {
+  big: style.Big,
+  medium: style.Medium,
+  small: style.Small,
+};
+
+const Icon: FC<IconProps> = ({ icon, size = "big" }) => {
+  const iconClassName = [sizeStyles[size], "material-symbols-outlined"].join(" ");
 
   return <span className={iconClassName}>{icon}</span>;
 };

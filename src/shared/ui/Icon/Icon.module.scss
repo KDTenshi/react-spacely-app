@@ -1,5 +1,16 @@
 @use "../../style/colors.scss" as c;
 
-.Icon {
+.Big {
   font-size: 35px;
+  user-select: none;
+}
+
+.Medium {
+  font-size: 25px;
+  user-select: none;
+}
+
+.Small {
+  font-size: 20px;
+  user-select: none;
 }

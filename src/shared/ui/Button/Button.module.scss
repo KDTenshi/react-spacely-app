@@ -5,18 +5,30 @@
   @include t.BODY_1();
 
   padding: 5px 15px;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 10px;
 }
 
 .Medium {
   @include t.BODY_2();
 
   padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 5px;
 }
 
 .Small {
   @include t.BODY_3();
 
   padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 5px;
 }
 
 .Light {

@@ -1,6 +1,7 @@
 import type { FC } from "react";
-import style from "./ConfrimPopup.module.scss";
-import { Button, Heading } from "../../../../../shared/ui";
+import style from "./ConfirmPopup.module.scss";
+import Heading from "../Heading/Heading";
+import Button from "../Button/Button";
 
 interface ConfirmPopupProps {
   message: string;
@@ -9,8 +10,16 @@ interface ConfirmPopupProps {
 }
 
 const ConfirmPopup: FC<ConfirmPopupProps> = ({ message, onConfirm, hidePopup }) => {
+  const handleWrapperClick = (e: React.MouseEvent) => {
+    const target = e.target as HTMLElement;
+
+    if (target.classList.contains(style.Wrapper)) {
+      hidePopup();
+    }
+  };
+
   return (
-    <div className={style.Wrapper} onClick={hidePopup}>
+    <div className={style.Wrapper} onClick={handleWrapperClick}>
       <div className={style.Popup}>
         <Heading level={4}>{message}</Heading>
         <div className={style.Buttons}>

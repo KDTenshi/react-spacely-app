@@ -27,8 +27,10 @@ const EditBoardPage: FC = () => {
   return (
     <Page title={`EDIT ${board.name}`} className={style.Edit} background="image">
       <div className={style.Header}>
-        <Heading level={3}>Edit board</Heading>
-        <BlockLink to={`/boards/${board.id}`}>To board</BlockLink>
+        <Heading level={4}>Edit board</Heading>
+        <BlockLink to={`/boards/${board.id}`} size="medium">
+          To board
+        </BlockLink>
       </div>
       <div className={style.Content}>
         <EditBoard board={board} />

@@ -1,20 +1,31 @@
 @use "../../style/colors.scss" as c;
 @use "../../style/typography.scss" as t;
 
+@mixin Heading($flexGap) {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: $flexGap;
+}
+
 .First {
   @include t.HEADING_1();
+  @include Heading(20px);
 }
 
 .Second {
   @include t.HEADING_2();
+  @include Heading(15px);
 }
 
 .Third {
   @include t.HEADING_3();
+  @include Heading(10px);
 }
 
 .Fourth {
   @include t.HEADING_4();
+  @include Heading(10px);
 }
 
 @mixin HeadingColoring($baseColor, $selectColor) {
