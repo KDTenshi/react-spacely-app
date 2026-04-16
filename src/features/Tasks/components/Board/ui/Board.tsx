@@ -1,7 +1,7 @@
 import { useState, type FC } from "react";
 import style from "./Board.module.scss";
 import type { TBoard, TColumnType } from "../../../../../shared/types/types";
-import { Heading, BlockLink, Input, Button, Icon } from "../../../../../shared/ui";
+import { Heading, Input, Button, Icon } from "../../../../../shared/ui";
 import { Column } from "../../Column";
 import { Panel } from "../../Panel";
 import {
@@ -20,6 +20,7 @@ import {
   changeTaskPosition,
   clearDraggingTaskID,
   createTask,
+  editBoard,
   setDraggingTaskID,
 } from "../../../store/tasksSlice";
 import { Card } from "../../Card";
@@ -34,6 +35,8 @@ const Board: FC<BoardProps> = ({ board }) => {
   const draggingTaskID = useAppSelector((state) => state.tasks.draggingTaskID);
 
   const [taskName, setTaskName] = useState("");
+  const [isEditName, setIsEditName] = useState(false);
+  const [editName, setEditName] = useState(board.name);
 
   const dispatch = useAppDispatch();
 
@@ -92,17 +95,53 @@ const Board: FC<BoardProps> = ({ board }) => {
     dispatch(clearDraggingTaskID());
   };
 
+  const handleEditName = (e: React.SubmitEvent) => {
+    e.preventDefault();
+
+    const name = editName.trim();
+
+    if (name) {
+      dispatch(editBoard({ name }));
+    }
+
+    setIsEditName(false);
+  };
+
+  const handleEditNameBlur = () => {
+    const name = editName.trim();
+
+    if (name !== board.name) {
+      dispatch(editBoard({ name }));
+    }
+
+    setIsEditName(false);
+  };
+
   return (
     <div className={style.Board}>
       <div className={style.Head}>
         <div className={style.Info}>
-          <Heading level={4}>
-            <Icon icon="view_kanban" size="medium" />
-            {board.name}
-          </Heading>
-          <BlockLink to={"edit"} size="medium">
-            Edit
-          </BlockLink>
+          {!isEditName && (
+            <Heading level={4}>
+              <Icon icon="view_kanban" size="medium" />
+              {board.name}
+            </Heading>
+          )}
+          {isEditName && (
+            <form onSubmit={handleEditName}>
+              <Input
+                placeholder="Board name"
+                value={editName}
+                onChange={(e) => setEditName(e.target.value)}
+                autoFocus
+                onBlur={handleEditNameBlur}
+              />
+            </form>
+          )}
+          <Button size="medium" onClick={() => setIsEditName(true)}>
+            <Icon icon="edit_square" size="small" />
+            Edit name
+          </Button>
         </div>
         <div className={style.Form} onSubmit={handleAddTask}>
           <form className={style.AddTask}>

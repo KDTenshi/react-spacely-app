@@ -30,7 +30,6 @@ export const tasksSlice = createSlice({
       const board: TBoard = {
         id: nanoid(),
         name,
-        description: "",
         columns: {
           todo: [],
           doing: [],
@@ -50,14 +49,14 @@ export const tasksSlice = createSlice({
       delete state.boardsList[boardID];
     },
 
-    editBoard: (state, action: PayloadAction<{ name: string; description: string }>) => {
-      const { name, description } = action.payload;
+    editBoard: (state, action: PayloadAction<{ name: string }>) => {
+      const { name } = action.payload;
 
       const boardID = state.selectedBoardID;
 
       if (!boardID) return;
 
-      state.boardsList[boardID] = { ...state.boardsList[boardID], name, description };
+      state.boardsList[boardID] = { ...state.boardsList[boardID], name };
     },
 
     createTask: (state, action: PayloadAction<{ name: string }>) => {
