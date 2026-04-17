@@ -3,9 +3,9 @@ import style from "./Board.module.scss";
 import type { TBoard, TColumnType } from "../../../../../shared/types/types";
 import { Column } from "../../Column";
 import { Panel } from "../../Panel";
-import { AddTaskForm } from "../../AddTaskForm";
 import { BoardInfo } from "../../BoardInfo";
 import { BoardDnd } from "../../BoardDnd";
+import { CreateTaskForm } from "../../CreateTaskForm";
 
 interface BoardProps {
   board: TBoard;
@@ -18,7 +18,7 @@ const Board: FC<BoardProps> = ({ board }) => {
     <div className={style.Board}>
       <div className={style.Head}>
         <BoardInfo boardName={board.name} />
-        <AddTaskForm />
+        <CreateTaskForm />
       </div>
       <div className={style.Body}>
         <Panel />

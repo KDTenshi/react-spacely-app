@@ -1,0 +1,12 @@
+@use "../../../../../shared/style/colors.scss" as c;
+
+.Form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.Button {
+  width: max-content;
+  align-self: end;
+}

@@ -1,10 +1,10 @@
 import { useState, type FC } from "react";
-import style from "./AddTaskForm.module.scss";
+import style from "./CreateTaskForm.module.scss";
 import { useAppDispatch } from "../../../../../app/store/appStore";
 import { createTask } from "../../../store/tasksSlice";
 import { Button, Icon, Input } from "../../../../../shared/ui";
 
-const AddTaskForm: FC = () => {
+const CreateTaskForm: FC = () => {
   const [taskName, setTaskName] = useState("");
   const dispatch = useAppDispatch();
 
@@ -36,4 +36,4 @@ const AddTaskForm: FC = () => {
   );
 };
 
-export default AddTaskForm;
+export default CreateTaskForm;
