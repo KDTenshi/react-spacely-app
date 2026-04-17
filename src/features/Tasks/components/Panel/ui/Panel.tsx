@@ -56,6 +56,8 @@ const Panel: FC = () => {
     if (task) {
       dispatch(deleteTask({ taskID: task.id }));
     }
+
+    setIsDelete(false);
   };
 
   return (

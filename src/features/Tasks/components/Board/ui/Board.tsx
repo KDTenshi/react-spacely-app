@@ -1,29 +1,11 @@
-import { useState, type FC } from "react";
+import type { FC } from "react";
 import style from "./Board.module.scss";
 import type { TBoard, TColumnType } from "../../../../../shared/types/types";
-import { Heading, Input, Button, Icon } from "../../../../../shared/ui";
 import { Column } from "../../Column";
 import { Panel } from "../../Panel";
-import {
-  DndContext,
-  DragOverlay,
-  MouseSensor,
-  pointerWithin,
-  useSensor,
-  useSensors,
-  type DragOverEvent,
-  type DragStartEvent,
-} from "@dnd-kit/core";
-import { useAppDispatch, useAppSelector } from "../../../../../app/store/appStore";
-import {
-  changeTaskColumn,
-  changeTaskPosition,
-  clearDraggingTaskID,
-  createTask,
-  editBoard,
-  setDraggingTaskID,
-} from "../../../store/tasksSlice";
-import { Card } from "../../Card";
+import { AddTaskForm } from "../../AddTaskForm";
+import { BoardInfo } from "../../BoardInfo";
+import { BoardDnd } from "../../BoardDnd";
 
 interface BoardProps {
   board: TBoard;
@@ -32,150 +14,19 @@ interface BoardProps {
 const Board: FC<BoardProps> = ({ board }) => {
   const columns = Object.keys(board.columns) as TColumnType[];
 
-  const draggingTaskID = useAppSelector((state) => state.tasks.draggingTaskID);
-
-  const [taskName, setTaskName] = useState("");
-  const [isEditName, setIsEditName] = useState(false);
-  const [editName, setEditName] = useState(board.name);
-
-  const dispatch = useAppDispatch();
-
-  const handleAddTask = (e: React.SubmitEvent) => {
-    e.preventDefault();
-
-    const name = taskName.trim();
-
-    if (name) {
-      dispatch(createTask({ name }));
-      setTaskName("");
-    }
-  };
-
-  const mouseSensor = useSensor(MouseSensor, { activationConstraint: { distance: 10 } });
-  const sensors = useSensors(mouseSensor);
-
-  const handleDragStart = (e: DragStartEvent) => {
-    const activeID = e.active.id as string;
-
-    dispatch(setDraggingTaskID(activeID));
-  };
-
-  const handleDragOver = (e: DragOverEvent) => {
-    const active = e.active;
-    const over = e.over;
-
-    if (!over) return;
-
-    const activeData = active.data.current;
-    const overData = over.data.current;
-
-    if (!activeData || !overData) return;
-
-    const activeType = activeData.type;
-    const overType = overData.type;
-
-    if (activeType === overType) {
-      const activeTaskID = active.id as string;
-      const overTaskID = over.id as string;
-
-      if (activeTaskID === overTaskID) return;
-
-      dispatch(changeTaskPosition({ activeTaskID, overTaskID }));
-    }
-
-    if (activeType !== overType) {
-      const taskID = active.id as string;
-      const column = over.id as TColumnType;
-
-      dispatch(changeTaskColumn({ taskID, column }));
-    }
-  };
-
-  const handleDragEnd = () => {
-    dispatch(clearDraggingTaskID());
-  };
-
-  const handleEditName = (e: React.SubmitEvent) => {
-    e.preventDefault();
-
-    const name = editName.trim();
-
-    if (name) {
-      dispatch(editBoard({ name }));
-    }
-
-    setIsEditName(false);
-  };
-
-  const handleEditNameBlur = () => {
-    const name = editName.trim();
-
-    if (name !== board.name) {
-      dispatch(editBoard({ name }));
-    }
-
-    setIsEditName(false);
-  };
-
   return (
     <div className={style.Board}>
       <div className={style.Head}>
-        <div className={style.Info}>
-          {!isEditName && (
-            <Heading level={4}>
-              <Icon icon="view_kanban" size="medium" />
-              {board.name}
-            </Heading>
-          )}
-          {isEditName && (
-            <form onSubmit={handleEditName}>
-              <Input
-                placeholder="Board name"
-                value={editName}
-                onChange={(e) => setEditName(e.target.value)}
-                autoFocus
-                onBlur={handleEditNameBlur}
-              />
-            </form>
-          )}
-          <Button size="medium" onClick={() => setIsEditName(true)}>
-            <Icon icon="edit_square" size="small" />
-            Edit name
-          </Button>
-        </div>
-        <div className={style.Form} onSubmit={handleAddTask}>
-          <form className={style.AddTask}>
-            <Input
-              placeholder="Task name..."
-              className={style.Input}
-              value={taskName}
-              onChange={(e) => setTaskName(e.target.value)}
-            />
-            <Button type="submit">
-              <Icon icon="add" size="small" />
-              Add task
-            </Button>
-          </form>
-        </div>
+        <BoardInfo boardName={board.name} />
+        <AddTaskForm />
       </div>
       <div className={style.Body}>
         <Panel />
-        <DndContext
-          sensors={sensors}
-          collisionDetection={pointerWithin}
-          onDragStart={handleDragStart}
-          onDragOver={handleDragOver}
-          onDragEnd={handleDragEnd}
-        >
+        <BoardDnd>
           {columns.map((column) => (
             <Column columnType={column} key={column} />
           ))}
-          {draggingTaskID && (
-            <DragOverlay>
-              <Card taskID={draggingTaskID} />
-            </DragOverlay>
-          )}
-        </DndContext>
+        </BoardDnd>
       </div>
     </div>
   );

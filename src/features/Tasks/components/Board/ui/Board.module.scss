@@ -14,29 +14,6 @@
   background: c.$WHITE;
 }
 
-.Form,
-.Info {
-  padding: 15px 25px;
-  border-bottom: 1px solid c.$GRAY;
-}
-
-.Info {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.AddTask {
-  display: flex;
-  align-items: center;
-  justify-content: start;
-  gap: 10px;
-}
-
-.Input {
-  width: 25vw;
-}
-
 .Body {
   width: 100%;
   height: 100%;

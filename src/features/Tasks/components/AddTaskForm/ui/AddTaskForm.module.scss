@@ -1,0 +1,17 @@
+@use "../../../../../shared/style/colors.scss" as c;
+
+.Wrapper {
+  padding: 15px 25px;
+  border-bottom: 1px solid c.$GRAY;
+}
+
+.Form {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 10px;
+}
+
+.Input {
+  width: 25vw;
+}

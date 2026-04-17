@@ -28,7 +28,12 @@ const CreateBoardPage: FC = () => {
       <div className={style.Content}>
         <Heading level={3}>Create new board</Heading>
         <form className={style.Form} onSubmit={handleSubmit}>
-          <Input placeholder="Board name..." value={boardName} onChange={(e) => setBoardName(e.target.value)} />
+          <Input
+            placeholder="Board name..."
+            value={boardName}
+            onChange={(e) => setBoardName(e.target.value)}
+            autoFocus
+          />
           <Button type="submit" className={style.Button}>
             Continue
           </Button>
