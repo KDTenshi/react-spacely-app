@@ -35,6 +35,23 @@ const BoardInfo: FC<BoardInfoProps> = ({ boardName }) => {
 
     setIsEditName(false);
   };
+
+  const handleButtonClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+
+    if (isEditName) {
+      const name = editName.trim();
+
+      if (name) {
+        dispatch(editBoard({ name }));
+      }
+
+      setIsEditName(false);
+    } else {
+      setIsEditName(true);
+    }
+  };
+
   return (
     <div className={style.Info}>
       {!isEditName && (
@@ -55,7 +72,7 @@ const BoardInfo: FC<BoardInfoProps> = ({ boardName }) => {
           />
         </form>
       )}
-      <Button size="medium" onClick={() => setIsEditName(true)}>
+      <Button size="medium" onMouseDown={handleButtonClick}>
         <Icon icon="edit_square" size="small" />
         Edit name
       </Button>
