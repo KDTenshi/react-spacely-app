@@ -11,7 +11,7 @@ type TasksState = {
   draggingTaskID: string | null;
 };
 
-const initialState: TasksState = {
+export const tasksInitialState: TasksState = {
   boardsList: {},
 
   selectedBoardID: null,
@@ -22,7 +22,7 @@ const initialState: TasksState = {
 
 export const tasksSlice = createSlice({
   name: "tasks",
-  initialState,
+  initialState: tasksInitialState,
   reducers: {
     createBoard: (state, action: PayloadAction<{ name: string }>) => {
       const { name } = action.payload;

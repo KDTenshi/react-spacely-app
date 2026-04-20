@@ -87,7 +87,9 @@ const Panel: FC = () => {
               onChange={(e) => setTaskDescription(e.target.value)}
             ></textarea>
             <PriorityPicker activePriority={priority} setActivePriority={setPriority} />
-            <Button className={style.Button}>Confirm</Button>
+            <Button className={style.Button} onClick={handleEditTask}>
+              Confirm
+            </Button>
           </form>
         )}
       </div>

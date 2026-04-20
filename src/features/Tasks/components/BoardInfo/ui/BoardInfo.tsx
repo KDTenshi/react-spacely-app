@@ -1,4 +1,4 @@
-import { useState, type FC } from "react";
+import { useEffect, useState, type FC } from "react";
 import style from "./BoardInfo.module.scss";
 import { useAppDispatch } from "../../../../../app/store/appStore";
 import { editBoard } from "../../../store/tasksSlice";
@@ -11,6 +11,10 @@ interface BoardInfoProps {
 const BoardInfo: FC<BoardInfoProps> = ({ boardName }) => {
   const [isEditName, setIsEditName] = useState(false);
   const [editName, setEditName] = useState(boardName);
+
+  useEffect(() => {
+    setEditName(boardName);
+  }, [boardName]);
 
   const dispatch = useAppDispatch();
 

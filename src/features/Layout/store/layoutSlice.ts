@@ -4,13 +4,13 @@ type LayoutState = {
   isSideMenuShown: boolean;
 };
 
-const initialState: LayoutState = {
+export const layoutInitialState: LayoutState = {
   isSideMenuShown: true,
 };
 
 export const layoutSlice = createSlice({
   name: "layout",
-  initialState,
+  initialState: layoutInitialState,
   reducers: {
     switchSideMenuStatus: (state) => {
       state.isSideMenuShown = !state.isSideMenuShown;
