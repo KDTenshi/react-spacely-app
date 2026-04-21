@@ -10,11 +10,7 @@ const Panel: FC = () => {
   const dispatch = useAppDispatch();
 
   const task = useAppSelector((state) =>
-    state.tasks.selectedBoardID
-      ? state.tasks.editingTaskID
-        ? state.tasks.boardsList[state.tasks.selectedBoardID].tasksList[state.tasks.editingTaskID]
-        : null
-      : null,
+    state.tasks.editingTaskID ? state.tasks.tasksByID[state.tasks.editingTaskID] : null,
   );
 
   const [taskName, setTaskName] = useState("");
@@ -55,6 +51,7 @@ const Panel: FC = () => {
   const handleDelete = () => {
     if (task) {
       dispatch(deleteTask({ taskID: task.id }));
+      dispatch(clearEditingTaskID());
     }
 
     setIsDelete(false);

@@ -1,16 +1,20 @@
 import { useEffect, useState, type FC } from "react";
 import style from "./BoardInfo.module.scss";
 import { useAppDispatch } from "../../../../../app/store/appStore";
-import { editBoard } from "../../../store/tasksSlice";
-import { Button, Heading, Icon, Input } from "../../../../../shared/ui";
+import { deleteBoard, editBoard } from "../../../store/tasksSlice";
+import { Button, ConfirmPopup, Heading, Icon, Input } from "../../../../../shared/ui";
+import { useNavigate } from "react-router";
 
 interface BoardInfoProps {
   boardName: string;
+  boardID: string;
 }
 
-const BoardInfo: FC<BoardInfoProps> = ({ boardName }) => {
+const BoardInfo: FC<BoardInfoProps> = ({ boardName, boardID }) => {
   const [isEditName, setIsEditName] = useState(false);
   const [editName, setEditName] = useState(boardName);
+  const [isDelete, setIsDelete] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setEditName(boardName);
@@ -24,7 +28,7 @@ const BoardInfo: FC<BoardInfoProps> = ({ boardName }) => {
     const name = editName.trim();
 
     if (name) {
-      dispatch(editBoard({ name }));
+      dispatch(editBoard({ name, boardID }));
     }
 
     setIsEditName(false);
@@ -34,7 +38,7 @@ const BoardInfo: FC<BoardInfoProps> = ({ boardName }) => {
     const name = editName.trim();
 
     if (name !== boardName) {
-      dispatch(editBoard({ name }));
+      dispatch(editBoard({ name, boardID }));
     }
 
     setIsEditName(false);
@@ -47,7 +51,7 @@ const BoardInfo: FC<BoardInfoProps> = ({ boardName }) => {
       const name = editName.trim();
 
       if (name) {
-        dispatch(editBoard({ name }));
+        dispatch(editBoard({ name, boardID }));
       }
 
       setIsEditName(false);
@@ -56,8 +60,16 @@ const BoardInfo: FC<BoardInfoProps> = ({ boardName }) => {
     }
   };
 
+  const handleDeleteBoard = () => {
+    dispatch(deleteBoard({ boardID }));
+    navigate("/boards", { replace: true });
+  };
+
   return (
     <div className={style.Info}>
+      {isDelete && (
+        <ConfirmPopup message="Delete board?" onConfirm={handleDeleteBoard} hidePopup={() => setIsDelete(false)} />
+      )}
       {!isEditName && (
         <Heading level={4}>
           <Icon icon="view_kanban" size="medium" />
@@ -76,10 +88,16 @@ const BoardInfo: FC<BoardInfoProps> = ({ boardName }) => {
           />
         </form>
       )}
-      <Button size="medium" onMouseDown={handleButtonClick}>
-        <Icon icon="edit_square" size="small" />
-        Edit name
-      </Button>
+      <div className={style.Buttons}>
+        <Button size="medium" onMouseDown={handleButtonClick}>
+          <Icon icon="edit_square" size="small" />
+          {isEditName ? "Confirm" : "Edit name"}
+        </Button>
+        <Button size="medium" onClick={() => setIsDelete(true)}>
+          <Icon icon="delete" size="small" />
+          Delete
+        </Button>
+      </div>
     </div>
   );
 };

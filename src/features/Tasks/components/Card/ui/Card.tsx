@@ -14,13 +14,9 @@ interface CardProps {
 const Card: FC<CardProps> = ({ taskID }) => {
   const { attributes, listeners, setNodeRef } = useSortable({ id: taskID, data: { type: "task" } });
 
-  const task = useAppSelector((state) =>
-    state.tasks.selectedBoardID ? state.tasks.boardsList[state.tasks.selectedBoardID].tasksList[taskID] : null,
-  );
+  const task = useAppSelector((state) => state.tasks.tasksByID[taskID]);
 
   const dispatch = useAppDispatch();
-
-  if (!task) return null;
 
   return (
     <div

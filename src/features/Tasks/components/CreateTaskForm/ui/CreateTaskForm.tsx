@@ -4,7 +4,11 @@ import { useAppDispatch } from "../../../../../app/store/appStore";
 import { createTask } from "../../../store/tasksSlice";
 import { Button, Icon, Input } from "../../../../../shared/ui";
 
-const CreateTaskForm: FC = () => {
+interface CreateTaskFormProps {
+  boardID: string;
+}
+
+const CreateTaskForm: FC<CreateTaskFormProps> = ({ boardID }) => {
   const [taskName, setTaskName] = useState("");
   const dispatch = useAppDispatch();
 
@@ -14,7 +18,7 @@ const CreateTaskForm: FC = () => {
     const name = taskName.trim();
 
     if (name) {
-      dispatch(createTask({ name }));
+      dispatch(createTask({ name, boardID }));
       setTaskName("");
     }
   };

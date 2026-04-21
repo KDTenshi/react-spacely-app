@@ -12,19 +12,19 @@ interface BoardProps {
 }
 
 const Board: FC<BoardProps> = ({ board }) => {
-  const columns = Object.keys(board.columns) as TColumnType[];
+  const columnsArray = Object.keys(board.columns) as TColumnType[];
 
   return (
     <div className={style.Board}>
       <div className={style.Head}>
-        <BoardInfo boardName={board.name} />
-        <CreateTaskForm />
+        <BoardInfo boardName={board.name} boardID={board.id} />
+        <CreateTaskForm boardID={board.id} />
       </div>
       <div className={style.Body}>
         <Panel />
         <BoardDnd>
-          {columns.map((column) => (
-            <Column columnType={column} key={column} />
+          {columnsArray.map((column) => (
+            <Column columnType={column} key={column} tasksIDs={board.columns[column]} />
           ))}
         </BoardDnd>
       </div>

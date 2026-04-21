@@ -2,19 +2,21 @@ import { createSlice, nanoid, type PayloadAction } from "@reduxjs/toolkit";
 import type { TBoard, TColumnType, TTask, TTaskPriority } from "../../../shared/types/types";
 import { arrayMove } from "@dnd-kit/sortable";
 
-type TasksState = {
-  boardsList: { [key in string]: TBoard };
+export type TasksState = {
+  boardsByID: Record<string, TBoard>;
+  tasksByID: Record<string, TTask>;
 
-  selectedBoardID: string | null;
+  boardsOrder: string[];
 
   editingTaskID: string | null;
   draggingTaskID: string | null;
 };
 
 export const tasksInitialState: TasksState = {
-  boardsList: {},
+  boardsByID: {},
+  tasksByID: {},
 
-  selectedBoardID: null,
+  boardsOrder: [],
 
   editingTaskID: null,
   draggingTaskID: null,
@@ -35,36 +37,34 @@ export const tasksSlice = createSlice({
           doing: [],
           done: [],
         },
-        tasksList: {},
       };
 
-      state.boardsList[board.id] = board;
+      state.boardsByID[board.id] = board;
+      state.boardsOrder.push(board.id);
     },
 
-    deleteBoard: (state) => {
-      const boardID = state.selectedBoardID;
+    deleteBoard: (state, action: PayloadAction<{ boardID: string }>) => {
+      const { boardID } = action.payload;
 
-      if (!boardID) return;
+      const board = state.boardsByID[boardID];
+      const boardTasksIDs = Object.values(board.columns).flat();
 
-      delete state.boardsList[boardID];
+      for (const taskID of boardTasksIDs) {
+        delete state.tasksByID[taskID];
+      }
+
+      state.boardsOrder = state.boardsOrder.filter((id) => id !== boardID);
+      delete state.boardsByID[boardID];
     },
 
-    editBoard: (state, action: PayloadAction<{ name: string }>) => {
-      const { name } = action.payload;
+    editBoard: (state, action: PayloadAction<{ name: string; boardID: string }>) => {
+      const { name, boardID } = action.payload;
 
-      const boardID = state.selectedBoardID;
-
-      if (!boardID) return;
-
-      state.boardsList[boardID] = { ...state.boardsList[boardID], name };
+      state.boardsByID[boardID].name = name;
     },
 
-    createTask: (state, action: PayloadAction<{ name: string }>) => {
-      const { name } = action.payload;
-
-      const boardID = state.selectedBoardID;
-
-      if (!boardID) return;
+    createTask: (state, action: PayloadAction<{ name: string; boardID: string }>) => {
+      const { name, boardID } = action.payload;
 
       const task: TTask = {
         id: nanoid(),
@@ -76,84 +76,63 @@ export const tasksSlice = createSlice({
         priority: "low",
       };
 
-      state.boardsList[boardID].tasksList[task.id] = task;
-      state.boardsList[boardID].columns.todo.push(task.id);
+      state.tasksByID[task.id] = task;
+      state.boardsByID[boardID].columns.todo.push(task.id);
     },
 
     deleteTask: (state, action: PayloadAction<{ taskID: string }>) => {
       const { taskID } = action.payload;
 
-      const boardID = state.selectedBoardID;
+      const task = state.tasksByID[taskID];
 
-      if (!boardID) return;
-
-      const task = state.boardsList[boardID].tasksList[taskID];
-
-      delete state.boardsList[boardID].tasksList[taskID];
-      state.boardsList[boardID].columns[task.column] = state.boardsList[boardID].columns[task.column].filter(
+      state.boardsByID[task.boardID].columns[task.column] = state.boardsByID[task.boardID].columns[task.column].filter(
         (id) => id !== taskID,
       );
+
+      delete state.tasksByID[taskID];
     },
 
     editTask: (state, action: PayloadAction<{ name: string; description: string; priority: TTaskPriority }>) => {
       const { name, description, priority } = action.payload;
 
       const taskID = state.editingTaskID;
-      const boardID = state.selectedBoardID;
 
-      if (!taskID || !boardID) return;
+      if (!taskID) return;
 
-      state.boardsList[boardID].tasksList[taskID] = {
-        ...state.boardsList[boardID].tasksList[taskID],
-        name,
-        description,
-        priority,
-      };
+      state.tasksByID[taskID] = { ...state.tasksByID[taskID], name, description, priority };
     },
 
     changeTaskColumn: (state, action: PayloadAction<{ taskID: string; column: TColumnType }>) => {
       const { taskID, column } = action.payload;
 
-      const boardID = state.selectedBoardID;
-
-      if (!boardID) return;
-
-      const task = state.boardsList[boardID].tasksList[taskID];
+      const task = state.tasksByID[taskID];
       const oldColumn = task.column;
 
       task.column = column;
 
-      state.boardsList[boardID].columns[oldColumn] = state.boardsList[boardID].columns[oldColumn].filter(
+      state.boardsByID[task.boardID].columns[oldColumn] = state.boardsByID[task.boardID].columns[oldColumn].filter(
         (id) => id !== taskID,
       );
-      state.boardsList[boardID].columns[column].push(taskID);
+
+      state.boardsByID[task.boardID].columns[column].push(taskID);
     },
 
     changeTaskPosition: (state, action: PayloadAction<{ activeTaskID: string; overTaskID: string }>) => {
       const { activeTaskID, overTaskID } = action.payload;
 
-      const boardID = state.selectedBoardID;
+      const boardID = state.tasksByID[activeTaskID].boardID;
+      const column = state.tasksByID[activeTaskID].column;
 
-      if (!boardID) return;
+      const activeIndex = state.boardsByID[boardID].columns[column].findIndex((id) => id === activeTaskID);
+      const overIndex = state.boardsByID[boardID].columns[column].findIndex((id) => id === overTaskID);
 
-      const column = state.boardsList[boardID].tasksList[activeTaskID].column;
+      if (activeIndex === -1 || overIndex === -1) return;
 
-      const activeTaskIndex = state.boardsList[boardID].columns[column].findIndex((id) => id === activeTaskID);
-      const overTaskIndex = state.boardsList[boardID].columns[column].findIndex((id) => id === overTaskID);
-
-      state.boardsList[boardID].columns[column] = arrayMove(
-        state.boardsList[boardID].columns[column],
-        activeTaskIndex,
-        overTaskIndex,
+      state.boardsByID[boardID].columns[column] = arrayMove(
+        state.boardsByID[boardID].columns[column],
+        activeIndex,
+        overIndex,
       );
-    },
-
-    setSelectedBoardID: (state, action: PayloadAction<string>) => {
-      state.selectedBoardID = action.payload;
-    },
-
-    clearSelectedBoardID: (state) => {
-      state.selectedBoardID = null;
     },
 
     setDraggingTaskID: (state, action: PayloadAction<string>) => {
@@ -183,8 +162,6 @@ export const {
   editTask,
   changeTaskColumn,
   changeTaskPosition,
-  setSelectedBoardID,
-  clearSelectedBoardID,
   setDraggingTaskID,
   clearDraggingTaskID,
   setEditingTaskID,

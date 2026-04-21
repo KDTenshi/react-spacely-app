@@ -16,21 +16,23 @@ const displayStyles: ListUnion<BoardsListDisplay> = {
 };
 
 const BoardsList: FC<BoardsListProps> = ({ display = "compact" }) => {
-  const boards = useAppSelector((state) => state.tasks.boardsList);
-  const boardsArray = Object.values(boards);
+  const boardsOrder = useAppSelector((state) => state.tasks.boardsOrder);
+  const boards = useAppSelector((state) => state.tasks.boardsByID);
+
+  console.log(boards);
 
   return (
     <>
-      {display === "banner" && boardsArray.length === 0 && (
+      {display === "banner" && boardsOrder.length === 0 && (
         <TextItem size="big" align="center">
           No boards here
         </TextItem>
       )}
       <nav className={displayStyles[display]}>
-        {boardsArray.map((board) => (
-          <BlockLink to={`/boards/${board.id}`} key={board.id} size={display === "compact" ? "medium" : "big"}>
+        {boardsOrder.map((boardID) => (
+          <BlockLink to={`/boards/${boardID}`} key={boardID} size={display === "compact" ? "medium" : "big"}>
             <Icon icon="view_kanban" size={display === "compact" ? "small" : "medium"} />
-            {board.name}
+            {boards[boardID].name}
           </BlockLink>
         ))}
       </nav>

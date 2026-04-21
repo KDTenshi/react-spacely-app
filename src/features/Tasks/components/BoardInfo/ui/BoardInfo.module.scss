@@ -11,3 +11,10 @@
 .Input {
   width: 20vw;
 }
+
+.Buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}

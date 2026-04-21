@@ -62,6 +62,7 @@ const BoardDnd: FC<PropsWithChildren> = ({ children }) => {
 
   return (
     <DndContext
+      autoScroll={false}
       sensors={sensors}
       collisionDetection={pointerWithin}
       onDragStart={handleDragStart}
