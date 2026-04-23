@@ -1,8 +1,9 @@
 import type { FC } from "react";
 import style from "./BoardsList.module.scss";
 import { useAppSelector } from "../../../../../app/store/appStore";
-import { BlockLink, Icon, TextItem } from "../../../../../shared/ui";
+import { TextItem } from "../../../../../shared/ui";
 import type { ListUnion } from "../../../../../shared/types/types";
+import { BoardLink } from "../../BoardLink";
 
 type BoardsListDisplay = "compact" | "banner";
 
@@ -17,9 +18,6 @@ const displayStyles: ListUnion<BoardsListDisplay> = {
 
 const BoardsList: FC<BoardsListProps> = ({ display = "compact" }) => {
   const boardsOrder = useAppSelector((state) => state.tasks.boardsOrder);
-  const boards = useAppSelector((state) => state.tasks.boardsByID);
-
-  console.log(boards);
 
   return (
     <>
@@ -30,10 +28,7 @@ const BoardsList: FC<BoardsListProps> = ({ display = "compact" }) => {
       )}
       <nav className={displayStyles[display]}>
         {boardsOrder.map((boardID) => (
-          <BlockLink to={`/boards/${boardID}`} key={boardID} size={display === "compact" ? "medium" : "big"}>
-            <Icon icon="view_kanban" size={display === "compact" ? "small" : "medium"} />
-            {boards[boardID].name}
-          </BlockLink>
+          <BoardLink boardID={boardID} key={boardID} size={display === "compact" ? "small" : "big"} />
         ))}
       </nav>
     </>

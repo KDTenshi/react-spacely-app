@@ -8,6 +8,8 @@ export type TasksState = {
 
   boardsOrder: string[];
 
+  recentBoardsIDs: string[];
+
   editingTaskID: string | null;
   draggingTaskID: string | null;
 };
@@ -17,6 +19,8 @@ export const tasksInitialState: TasksState = {
   tasksByID: {},
 
   boardsOrder: [],
+
+  recentBoardsIDs: [],
 
   editingTaskID: null,
   draggingTaskID: null,
@@ -53,6 +57,10 @@ export const tasksSlice = createSlice({
         delete state.tasksByID[taskID];
       }
 
+      if (state.recentBoardsIDs.includes(boardID)) {
+        state.recentBoardsIDs = state.recentBoardsIDs.filter((id) => id !== boardID);
+      }
+
       state.boardsOrder = state.boardsOrder.filter((id) => id !== boardID);
       delete state.boardsByID[boardID];
     },
@@ -61,6 +69,16 @@ export const tasksSlice = createSlice({
       const { name, boardID } = action.payload;
 
       state.boardsByID[boardID].name = name;
+    },
+
+    addRecentBoardID: (state, action: PayloadAction<{ boardID: string }>) => {
+      const { boardID } = action.payload;
+
+      if (state.recentBoardsIDs.includes(boardID)) {
+        state.recentBoardsIDs = state.recentBoardsIDs.filter((id) => id !== boardID);
+      }
+
+      state.recentBoardsIDs = [boardID, ...state.recentBoardsIDs];
     },
 
     createTask: (state, action: PayloadAction<{ name: string; boardID: string }>) => {
@@ -157,6 +175,7 @@ export const {
   createBoard,
   deleteBoard,
   editBoard,
+  addRecentBoardID,
   createTask,
   deleteTask,
   editTask,

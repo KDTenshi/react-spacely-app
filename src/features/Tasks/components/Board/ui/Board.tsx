@@ -6,6 +6,8 @@ import { Panel } from "../../Panel";
 import { BoardInfo } from "../../BoardInfo";
 import { BoardDnd } from "../../BoardDnd";
 import { CreateTaskForm } from "../../CreateTaskForm";
+import { useAppDispatch } from "../../../../../app/store/appStore";
+import { addRecentBoardID } from "../../../store/tasksSlice";
 
 interface BoardProps {
   board: TBoard;
@@ -13,6 +15,9 @@ interface BoardProps {
 
 const Board: FC<BoardProps> = ({ board }) => {
   const columnsArray = Object.keys(board.columns) as TColumnType[];
+  const dispatch = useAppDispatch();
+
+  dispatch(addRecentBoardID({ boardID: board.id }));
 
   return (
     <div className={style.Board}>

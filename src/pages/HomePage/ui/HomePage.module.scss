@@ -2,7 +2,13 @@
 
 .Home {
   display: flex;
-  align-items: start;
-  justify-content: center;
+  flex-direction: column;
+  gap: 25px;
   padding: 75px 125px;
+}
+
+.Container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 25px;
 }

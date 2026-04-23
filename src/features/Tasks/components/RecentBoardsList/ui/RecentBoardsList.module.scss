@@ -1,0 +1,18 @@
+@use "../../../../../shared/style/colors.scss" as c;
+
+.List {
+  width: 100%;
+  background: c.$WHITE;
+  border: 1px solid c.$GRAY;
+  padding: 15px 25px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.Links {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
